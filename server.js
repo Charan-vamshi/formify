@@ -12,7 +12,6 @@ import submissionRoutes from './routes/submissions.js';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -74,7 +73,8 @@ app.get('/', (req, res) => {
   res.sendFile('index.html', { root: 'public' });
 });
 
-const HOST = process.env.HOST || 'localhost';
+const HOST = '0.0.0.0';
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running on http://${HOST}:${PORT}`);
