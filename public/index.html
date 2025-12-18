@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formify - Login</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+      display: flex;
+      flex-direction: column;
+      color: #fff;
+    }
+    
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    
+    h1 {
+      font-size: 4em;
+      background: linear-gradient(45deg, #00d4ff, #7b2cbf);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+    
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 10px #00d4ff); }
+      to { filter: drop-shadow(0 0 20px #7b2cbf); }
+    }
+    
+    .subtitle {
+      font-size: 1.5em;
+      color: #b0b0c0;
+      margin-bottom: 40px;
+    }
+    
+    .college-info {
+      margin-bottom: 50px;
+    }
+    
+    .college-name {
+      font-size: 1.8em;
+      color: #00d4ff;
+      margin-bottom: 10px;
+    }
+    
+    .hod-info {
+      font-size: 1.2em;
+      color: #9090a0;
+    }
+    
+    .login-btn {
+      background: linear-gradient(135deg, #404050, #606070);
+      color: #fff;
+      border: 2px solid #00d4ff;
+      padding: 18px 50px;
+      font-size: 1.2em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .login-btn:hover {
+      background: linear-gradient(135deg, #505060, #707080);
+      border-color: #7b2cbf;
+      box-shadow: 0 0 30px rgba(123, 44, 191, 0.5);
+      transform: translateY(-3px);
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>FORMIFY</h1>
+    <p class="subtitle">Advanced Form Management System</p>
+    
+    <div class="college-info">
+      <div class="college-name">AMC Engineering College Bangalore</div>
+      <div class="hod-info">Prof. Nandeeshwar - HOD, CSE AIML</div>
+    </div>
+    
+    <a href="/auth/google" class="login-btn">Login with Google</a>
+  </div>
+</body>
+</html>

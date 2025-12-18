@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Formify</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+      color: #fff;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #404050, #606070);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      border: 2px solid #00d4ff;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    }
+    
+    h1 {
+      background: linear-gradient(45deg, #00d4ff, #7b2cbf);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 2.5em;
+    }
+    
+    .section {
+      background: #2a2a3e;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #404050;
+    }
+    
+    h2 {
+      color: #00d4ff;
+      margin-bottom: 20px;
+      font-size: 1.8em;
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      background: #3a3a4e;
+      border: 2px solid #505060;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 1em;
+      margin-bottom: 15px;
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #00d4ff;
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    }
+    
+    button {
+      background: linear-gradient(135deg, #404050, #606070);
+      color: #fff;
+      border: 2px solid #00d4ff;
+      padding: 12px 30px;
+      font-size: 1em;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+      margin-right: 10px;
+    }
+    
+    button:hover {
+      background: linear-gradient(135deg, #505060, #707080);
+      border-color: #7b2cbf;
+      box-shadow: 0 0 20px rgba(123, 44, 191, 0.5);
+      transform: translateY(-2px);
+    }
+    
+    .question-card {
+      background: #3a3a4e;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      border-left: 4px solid #00d4ff;
+    }
+    
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    
+    .question-number {
+      background: #00d4ff;
+      color: #1e1e2e;
+      padding: 5px 15px;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    
+    .delete-question {
+      background: linear-gradient(135deg, #4d1a1a, #6d2a2a);
+      border-color: #f87171;
+      padding: 8px 15px;
+    }
+    
+    .delete-question:hover {
+      border-color: #ff5555;
+    }
+    
+    .option-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+      align-items: center;
+    }
+    
+    .option-group input {
+      margin-bottom: 0;
+    }
+    
+    .add-option-btn, .remove-option-btn {
+      padding: 8px 15px;
+      font-size: 0.9em;
+      min-width: auto;
+    }
+    
+    .add-option-btn {
+      background: linear-gradient(135deg, #1a4d2e, #2a6d4e);
+      border-color: #4ade80;
+    }
+    
+    .remove-option-btn {
+      background: linear-gradient(135deg, #4d1a1a, #6d2a2a);
+      border-color: #f87171;
+    }
+    
+    .required-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .required-toggle input[type="checkbox"] {
+      width: auto;
+      margin: 0;
+    }
+    
+    .add-question-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #1a4d2e, #2a6d4e);
+      border-color: #4ade80;
+      margin-top: 20px;
+    }
+    
+    .form-list {
+      display: grid;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .form-card {
+      background: #3a3a4e;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #00d4ff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .form-title {
+      font-size: 1.2em;
+      color: #00d4ff;
+      margin-bottom: 5px;
+    }
+    
+    .form-status {
+      color: #b0b0c0;
+      font-size: 0.9em;
+    }
+    
+    .form-actions button {
+      padding: 8px 15px;
+      font-size: 0.9em;
+    }
+    
+    .message {
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+    
+    .success { background: #1a4d2e; color: #4ade80; }
+    .error { background: #4d1a1a; color: #f87171; }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .modal-content {
+      background: #2a2a3e;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      width: 90%;
+      border: 2px solid #00d4ff;
+    }
+    
+    .close-btn {
+      float: right;
+      font-size: 1.5em;
+      cursor: pointer;
+      color: #00d4ff;
+    }
+
+    .whitelist-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 2px solid #404050;
+    }
+
+    .whitelist-section h3 {
+      color: #00d4ff;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, <span id="adminEmail"></span></p>
+  </div>
+
+  <div class="section">
+    <h2>Create New Form</h2>
+    <input type="text" id="formTitle" placeholder="Form Title (e.g., Student Feedback Form)">
+    
+    <div id="questionsContainer"></div>
+    
+    <button class="add-question-btn" onclick="addQuestion()">+ Add Question</button>
+
+    <div class="whitelist-section">
+      <h3>Student Whitelist</h3>
+      <input type="file" id="whitelistFile" accept=".csv,.xlsx">
+      <p style="color: #b0b0c0; font-size: 0.9em; margin-top: 5px;">Upload a CSV/Excel file with student emails (one per line)</p>
+    </div>
+
+    <button onclick="createForm()" style="margin-top: 20px;">Create Form</button>
+    <div id="createMessage"></div>
+  </div>
+
+  <div class="section">
+    <h2>My Forms</h2>
+    <div class="form-list" id="formList">Loading...</div>
+  </div>
+
+  <div id="submissionsModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <h2>Form Submissions</h2>
+      <div id="submissionsContent"></div>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const adminEmail = urlParams.get('email');
+    document.getElementById('adminEmail').textContent = adminEmail;
+
+    let questionCounter = 0;
+    let questions = [];
+
+    function addQuestion() {
+      questionCounter++;
+      const questionId = `q${questionCounter}`;
+      
+      const questionHTML = `
+        <div class="question-card" id="${questionId}">
+          <div class="question-header">
+            <span class="question-number">Question ${questionCounter}</span>
+            <button class="delete-question" onclick="removeQuestion('${questionId}')">Delete</button>
+          </div>
+          
+          <input type="text" placeholder="Question Text" id="${questionId}-text">
+          
+          <select id="${questionId}-type" onchange="handleTypeChange('${questionId}')">
+            <option value="text">Short Text</option>
+            <option value="textarea">Long Text</option>
+            <option value="email">Email</option>
+            <option value="number">Number</option>
+            <option value="date">Date</option>
+            <option value="multiple">Multiple Choice</option>
+            <option value="checkbox">Checkboxes</option>
+            <option value="dropdown">Dropdown</option>
+          </select>
+          
+          <div id="${questionId}-options" style="display: none;"></div>
+          
+          <div class="required-toggle">
+            <input type="checkbox" id="${questionId}-required">
+            <label>Required Question</label>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('questionsContainer').insertAdjacentHTML('beforeend', questionHTML);
+      questions.push(questionId);
+    }
+
+    function removeQuestion(questionId) {
+      document.getElementById(questionId).remove();
+      questions = questions.filter(q => q !== questionId);
+      renumberQuestions();
+    }
+
+    function renumberQuestions() {
+      questions.forEach((qId, index) => {
+        const numberSpan = document.querySelector(`#${qId} .question-number`);
+        if (numberSpan) {
+          numberSpan.textContent = `Question ${index + 1}`;
+        }
+      });
+    }
+
+    function handleTypeChange(questionId) {
+      const type = document.getElementById(`${questionId}-type`).value;
+      const optionsDiv = document.getElementById(`${questionId}-options`);
+      
+      if (type === 'multiple' || type === 'checkbox' || type === 'dropdown') {
+        optionsDiv.style.display = 'block';
+        optionsDiv.innerHTML = `
+          <h4 style="color: #00d4ff; margin: 15px 0 10px 0;">Options:</h4>
+          <div id="${questionId}-options-list">
+            <div class="option-group">
+              <input type="text" placeholder="Option 1" class="option-input">
+              <button class="remove-option-btn" onclick="removeOption(this)" style="display: none;">-</button>
+            </div>
+          </div>
+          <button class="add-option-btn" onclick="addOption('${questionId}')">+ Add Option</button>
+        `;
+      } else {
+        optionsDiv.style.display = 'none';
+        optionsDiv.innerHTML = '';
+      }
+    }
+
+    function addOption(questionId) {
+      const optionsList = document.getElementById(`${questionId}-options-list`);
+      const optionCount = optionsList.querySelectorAll('.option-group').length + 1;
+      
+      const optionHTML = `
+        <div class="option-group">
+          <input type="text" placeholder="Option ${optionCount}" class="option-input">
+          <button class="remove-option-btn" onclick="removeOption(this)">-</button>
+        </div>
+      `;
+      
+      optionsList.insertAdjacentHTML('beforeend', optionHTML);
+      
+      const removeButtons = optionsList.querySelectorAll('.remove-option-btn');
+      if (removeButtons.length > 1) {
+        removeButtons.forEach(btn => btn.style.display = 'inline-block');
+      }
+    }
+
+    function removeOption(button) {
+      const optionsList = button.closest('[id$="-options-list"]');
+      button.closest('.option-group').remove();
+      
+      const remainingGroups = optionsList.querySelectorAll('.option-group');
+      if (remainingGroups.length === 1) {
+        remainingGroups[0].querySelector('.remove-option-btn').style.display = 'none';
+      }
+      
+      remainingGroups.forEach((group, index) => {
+        group.querySelector('input').placeholder = `Option ${index + 1}`;
+      });
+    }
+
+    async function createForm() {
+      const formTitle = document.getElementById('formTitle').value;
+      const whitelistFile = document.getElementById('whitelistFile').files[0];
+
+      if (!formTitle) {
+        showMessage('createMessage', 'Please enter a form title', 'error');
+        return;
+      }
+
+      if (questions.length === 0) {
+        showMessage('createMessage', 'Please add at least one question', 'error');
+        return;
+      }
+
+      const formStructure = questions.map((qId, index) => {
+        const text = document.getElementById(`${qId}-text`).value;
+        const type = document.getElementById(`${qId}-type`).value;
+        const required = document.getElementById(`${qId}-required`).checked;
+
+        if (!text) {
+          throw new Error(`Question ${index + 1} is missing text`);
+        }
+
+        const question = {
+          id: qId,
+          label: text,
+          type: type,
+          required: required
+        };
+
+        if (type === 'multiple' || type === 'checkbox' || type === 'dropdown') {
+          const optionInputs = document.querySelectorAll(`#${qId}-options-list .option-input`);
+          const options = Array.from(optionInputs).map(input => input.value.trim()).filter(v => v);
+          
+          if (options.length === 0) {
+            throw new Error(`Question ${index + 1} needs at least one option`);
+          }
+          
+          question.options = options;
+        }
+
+        return question;
+      });
+
+      try {
+        const formRes = await fetch('/api/forms/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ adminEmail, formTitle, formStructure })
+        });
+
+        const formData = await formRes.json();
+        
+        if (formData.error) {
+          showMessage('createMessage', formData.error, 'error');
+          return;
+        }
+
+        if (whitelistFile) {
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            const text = e.target.result;
+            const emails = text.split(/[\n,]/).map(e => e.trim()).filter(e => e);
+            
+            await fetch('/api/whitelist/upload', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ formId: formData.formId, emails })
+            });
+          };
+          reader.readAsText(whitelistFile);
+        }
+
+        showMessage('createMessage', 'Form created successfully!', 'success');
+        
+        document.getElementById('formTitle').value = '';
+        document.getElementById('whitelistFile').value = '';
+        document.getElementById('questionsContainer').innerHTML = '';
+        questions = [];
+        questionCounter = 0;
+        
+        loadForms();
+      } catch (error) {
+        showMessage('createMessage', error.message, 'error');
+      }
+    }
+
+    async function loadForms() {
+      const response = await fetch('/api/forms/my-forms', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adminEmail })
+      });
+
+      const data = await response.json();
+      const formList = document.getElementById('formList');
+      
+      if (data.forms && data.forms.length > 0) {
+        formList.innerHTML = data.forms.map(form => `
+          <div class="form-card">
+            <div>
+              <div class="form-title">${form.FormTitle}</div>
+              <div class="form-status">Status: ${form.IsLive ? 'Live' : 'Draft'} | Created: ${new Date(form.CreatedAt).toLocaleDateString()}</div>
+            </div>
+            <div class="form-actions">
+              ${!form.IsLive ? `<button onclick="goLive(${form.FormID})">Go Live</button>` : ''}
+              <button onclick="copyFormLink(${form.FormID})">Copy Link</button>
+              <button onclick="viewSubmissions(${form.FormID})">View Submissions</button>
+              <button onclick="deleteForm(${form.FormID})">Delete</button>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        formList.innerHTML = '<p style="color: #b0b0c0;">No forms created yet.</p>';
+      }
+    }
+
+    function copyFormLink(formId) {
+      const link = `${window.location.origin}/form.html?id=${formId}`;
+      navigator.clipboard.writeText(link);
+      alert('Form link copied to clipboard!');
+    }
+
+    async function goLive(formId) {
+      const response = await fetch('/api/forms/go-live', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formId, adminEmail })
+      });
+
+      const data = await response.json();
+      alert(data.message || data.error);
+      loadForms();
+    }
+
+    async function viewSubmissions(formId) {
+      const response = await fetch('/api/submissions/get-submissions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formId, adminEmail })
+      });
+
+      const data = await response.json();
+      const modal = document.getElementById('submissionsModal');
+      const content = document.getElementById('submissionsContent');
+      
+      if (data.submissions && data.submissions.length > 0) {
+        content.innerHTML = data.submissions.map(sub => `
+          <div style="background: #3a3a4e; padding: 10px; margin: 10px 0; border-radius: 5px;">
+            <strong>${sub.StudentEmail}</strong><br>
+            <small>${new Date(sub.SubmittedAt).toLocaleString()}</small><br>
+            <pre>${JSON.stringify(JSON.parse(sub.ResponseData), null, 2)}</pre>
+          </div>
+        `).join('');
+      } else {
+        content.innerHTML = '<p>No submissions yet.</p>';
+      }
+      
+      modal.style.display = 'flex';
+    }
+
+    async function deleteForm(formId) {
+      if (!confirm('Are you sure? This will delete all submissions too.')) return;
+      
+      const response = await fetch('/api/forms/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ formId, adminEmail })
+      });
+
+      const data = await response.json();
+      alert(data.message || data.error);
+      loadForms();
+    }
+
+    function closeModal() {
+      document.getElementById('submissionsModal').style.display = 'none';
+    }
+
+    function showMessage(elementId, message, type) {
+      const msgEl = document.getElementById(elementId);
+      msgEl.innerHTML = `<div class="message ${type}">${message}</div>`;
+      setTimeout(() => msgEl.innerHTML = '', 3000);
+    }
+
+    loadForms();
+  </script>
+</body>
+</html>
