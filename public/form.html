@@ -267,7 +267,7 @@
     }
 
     function renderForm() {
-      const structure = JSON.parse(formData.FormStructure);
+      const structure = typeof formData.FormStructure === 'string' ? JSON.parse(formData.FormStructure) : formData.FormStructure;
       
       let formHTML = `
         <h1>${formData.FormTitle}</h1>
