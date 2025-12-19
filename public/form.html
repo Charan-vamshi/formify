@@ -347,7 +347,7 @@
       
       const formElement = document.getElementById('responseForm');
       const formDataObj = new FormData(formElement);
-      const structure = JSON.parse(formData.FormStructure);
+      const structure = typeof formData.FormStructure === 'string' ? JSON.parse(formData.FormStructure) : formData.FormStructure;
       
       const responseData = {};
       
