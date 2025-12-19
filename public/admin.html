@@ -549,7 +549,7 @@
           <div style="background: #3a3a4e; padding: 10px; margin: 10px 0; border-radius: 5px;">
             <strong>${sub.StudentEmail}</strong><br>
             <small>${new Date(sub.SubmittedAt).toLocaleString()}</small><br>
-            <pre>${JSON.stringify(JSON.parse(sub.ResponseData), null, 2)}</pre>
+            <pre>${JSON.stringify(typeof sub.ResponseData === 'string' ? JSON.parse(sub.ResponseData) : sub.ResponseData, null, 2)}</pre>
           </div>
         `).join('');
       } else {
