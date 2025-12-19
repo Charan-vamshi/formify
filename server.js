@@ -31,7 +31,7 @@ app.get('/auth/google',
     const formId = req.query.formId;
     passport.authenticate('google', { 
       scope: ['profile', 'email'],
-      state: formId // Pass formId through state
+      state: formId
     })(req, res, next);
   }
 );
@@ -40,11 +40,11 @@ app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/' }),
   async (req, res) => {
     const email = req.user.emails[0].value;
-    const formId = req.query.state; // Get formId from state parameter
+    const formId = req.query.state;
     
     // If accessing a student form
     if (formId) {
-      return res.redirect(`/form.html?id=${formId}&email=${email}`);
+      return res.redirect(`https://formify-production.up.railway.app/form.html?id=${formId}&email=${email}`);
     }
     
     // Check if user exists for admin/owner login
@@ -56,9 +56,9 @@ app.get('/auth/google/callback',
     
     // Redirect based on role
     if (rows[0].Role === 'Owner') {
-      res.redirect('/owner.html?email=' + email);
+      res.redirect('https://formify-production.up.railway.app/owner.html?email=' + email);
     } else {
-      res.redirect('/admin.html?email=' + email);
+      res.redirect('https://formify-production.up.railway.app/admin.html?email=' + email);
     }
   }
 );
