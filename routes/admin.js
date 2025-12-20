@@ -40,5 +40,22 @@ router.post('/all-admins', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+// Owner removes an Admin
+router.post('/remove-admin', async (req, res) => {
+  try {
+    const { ownerEmail, adminEmail } = req.body;
+    
+    // Verify owner
+    const [owner] = await pool.query('SELECT * FROM Users WHERE Email = ? AND Role = ?', [ownerEmail, 'Owner']);
+    if (owner.length === 0) {
+      return res.status(403).json({ error: 'Only owner can remove admins' });
+    }
 
+    // Remove admin
+    await pool.query('DELETE FROM Users WHERE Email = ? AND Role = ?', [adminEmail, 'Admin']);
+    res.json({ message: 'Admin removed successfully' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 export default router;

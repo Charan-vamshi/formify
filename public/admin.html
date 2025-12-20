@@ -8,34 +8,33 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 100%);
       color: #fff;
       min-height: 100vh;
       padding: 20px;
     }
     
     .header {
-      background: linear-gradient(135deg, #404050, #606070);
-      padding: 20px;
-      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 25px;
+      border-radius: 12px;
       margin-bottom: 30px;
-      border: 2px solid #00d4ff;
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      backdrop-filter: blur(10px);
     }
     
     h1 {
-      background: linear-gradient(45deg, #00d4ff, #7b2cbf);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #00d4ff;
       font-size: 2.5em;
+      margin-bottom: 5px;
     }
     
     .section {
-      background: #2a2a3e;
-      padding: 25px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #404050;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     
     h2 {
@@ -46,10 +45,10 @@
     
     input, textarea, select {
       width: 100%;
-      padding: 12px;
-      background: #3a3a4e;
-      border: 2px solid #505060;
-      border-radius: 5px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
       color: #fff;
       font-size: 1em;
       margin-bottom: 15px;
@@ -60,34 +59,34 @@
     input:focus, textarea:focus, select:focus {
       outline: none;
       border-color: #00d4ff;
-      box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+      background: rgba(255, 255, 255, 0.08);
     }
     
     button {
-      background: linear-gradient(135deg, #404050, #606070);
-      color: #fff;
-      border: 2px solid #00d4ff;
+      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      color: #0a0e27;
+      border: none;
       padding: 12px 30px;
       font-size: 1em;
-      border-radius: 5px;
+      font-weight: 600;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s;
-      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
       margin-right: 10px;
     }
     
     button:hover {
-      background: linear-gradient(135deg, #505060, #707080);
-      border-color: #7b2cbf;
-      box-shadow: 0 0 20px rgba(123, 44, 191, 0.5);
       transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5);
     }
     
     .question-card {
-      background: #3a3a4e;
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 20px;
       border-left: 4px solid #00d4ff;
     }
     
@@ -100,20 +99,20 @@
     
     .question-number {
       background: #00d4ff;
-      color: #1e1e2e;
-      padding: 5px 15px;
-      border-radius: 5px;
+      color: #0a0e27;
+      padding: 8px 20px;
+      border-radius: 20px;
       font-weight: bold;
     }
     
     .delete-question {
-      background: linear-gradient(135deg, #4d1a1a, #6d2a2a);
-      border-color: #f87171;
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      color: white;
       padding: 8px 15px;
     }
     
     .delete-question:hover {
-      border-color: #ff5555;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
     }
     
     .option-group {
@@ -134,31 +133,30 @@
     }
     
     .add-option-btn {
-      background: linear-gradient(135deg, #1a4d2e, #2a6d4e);
-      border-color: #4ade80;
+      background: linear-gradient(135deg, #10b981, #059669);
     }
     
     .remove-option-btn {
-      background: linear-gradient(135deg, #4d1a1a, #6d2a2a);
-      border-color: #f87171;
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      color: white;
     }
     
     .required-toggle {
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 15px;
     }
     
     .required-toggle input[type="checkbox"] {
       width: auto;
       margin: 0;
+      cursor: pointer;
     }
     
     .add-question-btn {
       width: 100%;
-      background: linear-gradient(135deg, #1a4d2e, #2a6d4e);
-      border-color: #4ade80;
+      background: linear-gradient(135deg, #10b981, #059669);
       margin-top: 20px;
     }
     
@@ -169,39 +167,46 @@
     }
     
     .form-card {
-      background: #3a3a4e;
-      padding: 15px;
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 10px;
       border-left: 4px solid #00d4ff;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      transition: all 0.3s;
+    }
+
+    .form-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateX(5px);
     }
     
     .form-title {
-      font-size: 1.2em;
+      font-size: 1.3em;
       color: #00d4ff;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
     }
     
     .form-status {
       color: #b0b0c0;
-      font-size: 0.9em;
+      font-size: 0.95em;
     }
     
     .form-actions button {
-      padding: 8px 15px;
+      padding: 10px 18px;
       font-size: 0.9em;
     }
     
     .message {
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 10px;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-weight: 500;
     }
     
-    .success { background: #1a4d2e; color: #4ade80; }
-    .error { background: #4d1a1a; color: #f87171; }
+    .success { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #4ade80; }
+    .error { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #f87171; }
     
     .modal {
       display: none;
@@ -210,51 +215,65 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.9);
       justify-content: center;
       align-items: center;
       z-index: 1000;
     }
     
     .modal-content {
-      background: #2a2a3e;
-      padding: 30px;
-      border-radius: 10px;
-      max-width: 600px;
-      max-height: 80vh;
+      background: rgba(26, 29, 58, 0.95);
+      padding: 35px;
+      border-radius: 15px;
+      max-width: 700px;
+      max-height: 85vh;
       overflow-y: auto;
       width: 90%;
-      border: 2px solid #00d4ff;
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      backdrop-filter: blur(10px);
     }
     
     .close-btn {
       float: right;
-      font-size: 1.5em;
+      font-size: 1.8em;
       cursor: pointer;
       color: #00d4ff;
+      transition: all 0.3s;
+    }
+
+    .close-btn:hover {
+      color: #00e5ff;
+      transform: scale(1.1);
     }
 
     .whitelist-section {
-      margin-top: 20px;
-      padding-top: 20px;
-      border-top: 2px solid #404050;
+      margin-top: 25px;
+      padding-top: 25px;
+      border-top: 2px solid rgba(255, 255, 255, 0.1);
     }
 
     .whitelist-section h3 {
       color: #00d4ff;
       margin-bottom: 15px;
+      font-size: 1.3em;
+    }
+
+    .loading {
+      text-align: center;
+      color: #00d4ff;
+      padding: 20px;
     }
   </style>
 </head>
 <body>
   <div class="header">
     <h1>Admin Dashboard</h1>
-    <p>Welcome, <span id="adminEmail"></span></p>
+    <p style="font-size: 1.1em; color: #b0b0c0;">Welcome, <span id="adminEmail" style="color: #00d4ff;"></span></p>
   </div>
 
   <div class="section">
     <h2>Create New Form</h2>
-    <input type="text" id="formTitle" placeholder="Form Title (e.g., Student Feedback Form)">
+    <input type="text" id="formTitle" placeholder="Form Title (e.g., Student Feedback Survey 2025)">
     
     <div id="questionsContainer"></div>
     
@@ -263,22 +282,22 @@
     <div class="whitelist-section">
       <h3>Student Whitelist</h3>
       <input type="file" id="whitelistFile" accept=".csv,.xlsx">
-      <p style="color: #b0b0c0; font-size: 0.9em; margin-top: 5px;">Upload a CSV/Excel file with student emails (one per line)</p>
+      <p style="color: #b0b0c0; font-size: 0.9em; margin-top: 8px;">Upload a CSV/Excel file with student emails (one per line)</p>
     </div>
 
-    <button onclick="createForm()" style="margin-top: 20px;">Create Form</button>
+    <button onclick="createForm()" style="margin-top: 25px; padding: 15px 40px; font-size: 1.1em;">Create Form</button>
     <div id="createMessage"></div>
   </div>
 
   <div class="section">
     <h2>My Forms</h2>
-    <div class="form-list" id="formList">Loading...</div>
+    <div class="form-list" id="formList"><div class="loading">Loading your forms...</div></div>
   </div>
 
   <div id="submissionsModal" class="modal">
     <div class="modal-content">
       <span class="close-btn" onclick="closeModal()">&times;</span>
-      <h2>Form Submissions</h2>
+      <h2 style="margin-bottom: 20px;">Form Submissions</h2>
       <div id="submissionsContent"></div>
     </div>
   </div>
@@ -302,7 +321,7 @@
             <button class="delete-question" onclick="removeQuestion('${questionId}')">Delete</button>
           </div>
           
-          <input type="text" placeholder="Question Text" id="${questionId}-text">
+          <input type="text" placeholder="Enter your question" id="${questionId}-text">
           
           <select id="${questionId}-type" onchange="handleTypeChange('${questionId}')">
             <option value="text">Short Text</option>
@@ -319,7 +338,7 @@
           
           <div class="required-toggle">
             <input type="checkbox" id="${questionId}-required">
-            <label>Required Question</label>
+            <label>Mark as Required Question</label>
           </div>
         </div>
       `;
@@ -329,6 +348,7 @@
     }
 
     function removeQuestion(questionId) {
+      if (!confirm('Remove this question?')) return;
       document.getElementById(questionId).remove();
       questions = questions.filter(q => q !== questionId);
       renumberQuestions();
@@ -500,25 +520,25 @@
           <div class="form-card">
             <div>
               <div class="form-title">${form.FormTitle}</div>
-              <div class="form-status">Status: ${form.IsLive ? 'Live' : 'Draft'} | Created: ${new Date(form.CreatedAt).toLocaleDateString()}</div>
+              <div class="form-status">Status: ${form.IsLive ? '🟢 Live' : '🟡 Draft'} | Created: ${new Date(form.CreatedAt).toLocaleDateString()}</div>
             </div>
             <div class="form-actions">
               ${!form.IsLive ? `<button onclick="goLive(${form.FormID})">Go Live</button>` : ''}
               <button onclick="copyFormLink(${form.FormID})">Copy Link</button>
               <button onclick="viewSubmissions(${form.FormID})">View Submissions</button>
-              <button onclick="deleteForm(${form.FormID})">Delete</button>
+              <button onclick="deleteForm(${form.FormID})" class="delete-question">Delete</button>
             </div>
           </div>
         `).join('');
       } else {
-        formList.innerHTML = '<p style="color: #b0b0c0;">No forms created yet.</p>';
+        formList.innerHTML = '<p style="color: #b0b0c0; text-align: center; padding: 30px;">No forms created yet. Create your first form above!</p>';
       }
     }
 
     function copyFormLink(formId) {
-      const link = `${window.location.origin}/form.html?id=${formId}`;
+      const link = `https://formify-production.up.railway.app/form.html?id=${formId}`;
       navigator.clipboard.writeText(link);
-      alert('Form link copied to clipboard!');
+      alert('✅ Form link copied to clipboard!');
     }
 
     async function goLive(formId) {
@@ -546,16 +566,19 @@
       
       if (data.submissions && data.submissions.length > 0) {
         content.innerHTML = `
-          <button onclick="downloadCSV(${formId})" style="margin-bottom: 20px;">Download as CSV</button>
-        ` + data.submissions.map(sub => `
-          <div style="background: #3a3a4e; padding: 10px; margin: 10px 0; border-radius: 5px;">
-            <strong>${sub.StudentEmail}</strong><br>
-            <small>${new Date(sub.SubmittedAt).toLocaleString()}</small><br>
-            <pre>${JSON.stringify(typeof sub.ResponseData === 'string' ? JSON.parse(sub.ResponseData) : sub.ResponseData, null, 2)}</pre>
-          </div>
-        `).join('');
+          <button onclick="downloadCSV(${formId})" style="margin-bottom: 20px; padding: 12px 25px;">📥 Download as CSV</button>
+        ` + data.submissions.map(sub => {
+          const responseData = typeof sub.ResponseData === 'string' ? JSON.parse(sub.ResponseData) : sub.ResponseData;
+          return `
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 3px solid #00d4ff;">
+              <strong style="color: #00d4ff;">${sub.StudentEmail}</strong><br>
+              <small style="color: #b0b0c0;">${new Date(sub.SubmittedAt).toLocaleString()}</small><br>
+              <pre style="margin-top: 10px; color: #fff; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; overflow-x: auto;">${JSON.stringify(responseData, null, 2)}</pre>
+            </div>
+          `;
+        }).join('');
       } else {
-        content.innerHTML = '<p>No submissions yet.</p>';
+        content.innerHTML = '<p style="text-align: center; padding: 30px; color: #b0b0c0;">No submissions yet.</p>';
       }
       
       modal.style.display = 'flex';
@@ -571,7 +594,9 @@
       
       if (data.submissions && data.submissions.length > 0) {
         let csv = 'Student Email,Submitted At,';
-        const firstResponse = typeof data.submissions[0].ResponseData === 'string' ? JSON.parse(data.submissions[0].ResponseData) : data.submissions[0].ResponseData;
+        const firstResponse = typeof data.submissions[0].ResponseData === 'string' 
+          ? JSON.parse(data.submissions[0].ResponseData) 
+          : data.submissions[0].ResponseData;
         csv += Object.keys(firstResponse).join(',') + '\n';
         
         data.submissions.forEach(sub => {
@@ -591,7 +616,7 @@
     }
 
     async function deleteForm(formId) {
-      if (!confirm('Are you sure? This will delete all submissions too.')) return;
+      if (!confirm('⚠️ Are you sure? This will permanently delete the form and all submissions.')) return;
       
       const response = await fetch('/api/forms/delete', {
         method: 'POST',
@@ -611,7 +636,7 @@
     function showMessage(elementId, message, type) {
       const msgEl = document.getElementById(elementId);
       msgEl.innerHTML = `<div class="message ${type}">${message}</div>`;
-      setTimeout(() => msgEl.innerHTML = '', 3000);
+      setTimeout(() => msgEl.innerHTML = '', 4000);
     }
 
     loadForms();

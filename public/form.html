@@ -8,7 +8,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 100%);
       color: #fff;
       min-height: 100vh;
       padding: 20px;
@@ -18,46 +18,55 @@
     }
     
     .container {
-      background: #2a2a3e;
-      padding: 40px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 45px;
       border-radius: 15px;
-      max-width: 700px;
+      max-width: 750px;
       width: 100%;
-      border: 2px solid #00d4ff;
-      box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
     
     h1 {
-      background: linear-gradient(45deg, #00d4ff, #7b2cbf);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #00d4ff;
       font-size: 2.5em;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      text-align: center;
     }
     
     .form-description {
       color: #b0b0c0;
-      margin-bottom: 30px;
+      margin-bottom: 35px;
       font-size: 1.1em;
+      text-align: center;
     }
     
     .question-block {
-      margin-bottom: 25px;
-      padding: 20px;
-      background: #3a3a4e;
-      border-radius: 8px;
+      margin-bottom: 30px;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
       border-left: 4px solid #00d4ff;
+      transition: all 0.3s;
+    }
+
+    .question-block:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateX(3px);
     }
     
     .question-label {
-      font-size: 1.1em;
-      margin-bottom: 12px;
+      font-size: 1.15em;
+      margin-bottom: 15px;
       color: #fff;
+      font-weight: 500;
     }
     
     .required {
       color: #f87171;
       margin-left: 5px;
+      font-weight: bold;
     }
     
     input[type="text"],
@@ -67,10 +76,10 @@
     textarea,
     select {
       width: 100%;
-      padding: 12px;
-      background: #2a2a3e;
-      border: 2px solid #505060;
-      border-radius: 5px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
       color: #fff;
       font-size: 1em;
       transition: all 0.3s;
@@ -82,11 +91,12 @@
     select:focus {
       outline: none;
       border-color: #00d4ff;
-      box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+      background: rgba(255, 255, 255, 0.08);
     }
     
     textarea {
-      min-height: 100px;
+      min-height: 120px;
       resize: vertical;
     }
     
@@ -94,77 +104,90 @@
     .radio-group {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
     
     .option-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px;
-      background: #2a2a3e;
-      border-radius: 5px;
+      gap: 12px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s;
+      border: 2px solid transparent;
     }
     
     .option-item:hover {
-      background: #404050;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(0, 212, 255, 0.3);
     }
     
     .option-item input[type="radio"],
     .option-item input[type="checkbox"] {
       width: auto;
       cursor: pointer;
+      margin: 0;
     }
     
     .option-item label {
       cursor: pointer;
       flex: 1;
+      font-size: 1em;
     }
     
     .submit-btn {
-      background: linear-gradient(135deg, #404050, #606070);
-      color: #fff;
-      border: 2px solid #00d4ff;
-      padding: 15px 40px;
-      font-size: 1.1em;
-      border-radius: 5px;
+      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      color: #0a0e27;
+      border: none;
+      padding: 16px 50px;
+      font-size: 1.15em;
+      font-weight: 600;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s;
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
       width: 100%;
-      margin-top: 20px;
+      margin-top: 25px;
+      letter-spacing: 0.5px;
     }
     
     .submit-btn:hover {
-      background: linear-gradient(135deg, #505060, #707080);
-      border-color: #7b2cbf;
-      box-shadow: 0 0 30px rgba(123, 44, 191, 0.5);
       transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(0, 212, 255, 0.6);
+      background: linear-gradient(135deg, #00e5ff, #00b8e6);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
     
     .error-message {
-      background: #4d1a1a;
+      background: rgba(239, 68, 68, 0.2);
       color: #f87171;
-      padding: 20px;
-      border-radius: 8px;
+      padding: 25px;
+      border-radius: 10px;
       text-align: center;
       font-size: 1.2em;
+      border: 2px solid #f87171;
     }
     
     .success-message {
-      background: #1a4d2e;
+      background: rgba(34, 197, 94, 0.2);
       color: #4ade80;
-      padding: 20px;
-      border-radius: 8px;
+      padding: 25px;
+      border-radius: 10px;
       text-align: center;
       font-size: 1.2em;
+      border: 2px solid #4ade80;
     }
     
     .loading {
       text-align: center;
-      font-size: 1.3em;
+      font-size: 1.4em;
       color: #00d4ff;
     }
 
@@ -173,31 +196,56 @@
     }
 
     .login-btn {
-      background: linear-gradient(135deg, #404050, #606070);
-      color: #fff;
-      border: 2px solid #00d4ff;
-      padding: 15px 40px;
-      font-size: 1.1em;
-      border-radius: 5px;
+      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      color: #0a0e27;
+      border: none;
+      padding: 16px 50px;
+      font-size: 1.15em;
+      font-weight: 600;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s;
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+      box-shadow: 0 4px 20px rgba(0, 212, 255, 0.4);
       text-decoration: none;
       display: inline-block;
+      margin-top: 20px;
     }
 
     .login-btn:hover {
-      background: linear-gradient(135deg, #505060, #707080);
-      border-color: #7b2cbf;
-      box-shadow: 0 0 30px rgba(123, 44, 191, 0.5);
       transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(0, 212, 255, 0.6);
+      background: linear-gradient(135deg, #00e5ff, #00b8e6);
+    }
+
+    .spinner {
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid #00d4ff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 25px; }
+      h1 { font-size: 2em; }
+      .question-label { font-size: 1em; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div id="content">
-      <div class="loading">Loading form...</div>
+      <div class="loading">
+        <div class="spinner"></div>
+        Loading form...
+      </div>
     </div>
   </div>
 
@@ -213,47 +261,48 @@
         return;
       }
 
-      // If no email in URL, redirect to Google auth
       if (!studentEmail) {
         showLoginPrompt();
         return;
       }
 
-      // Check whitelist
-      const whitelistRes = await fetch('/api/whitelist/check', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ formId, studentEmail })
-      });
+      try {
+        const whitelistRes = await fetch('/api/whitelist/check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ formId, studentEmail })
+        });
 
-      const whitelistData = await whitelistRes.json();
-      
-      if (whitelistData.error) {
-        showError('You are not registered with this Gmail. Please contact the one who shared this form.');
-        return;
+        const whitelistData = await whitelistRes.json();
+        
+        if (whitelistData.error) {
+          showError('You are not registered with this Gmail. Please contact the one who shared this form.');
+          return;
+        }
+
+        const formRes = await fetch('/api/forms/get-form', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ formId })
+        });
+
+        const form = await formRes.json();
+        
+        if (form.error) {
+          showError(form.error);
+          return;
+        }
+
+        if (!form.IsLive) {
+          showError('This form is not live yet.');
+          return;
+        }
+
+        formData = form;
+        renderForm();
+      } catch (error) {
+        showError('Failed to load form. Please try again.');
       }
-
-      // Get form structure
-      const formRes = await fetch('/api/forms/get-form', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ formId })
-      });
-
-      const form = await formRes.json();
-      
-      if (form.error) {
-        showError(form.error);
-        return;
-      }
-
-      if (!form.IsLive) {
-        showError('This form is not live yet.');
-        return;
-      }
-
-      formData = form;
-      renderForm();
     }
 
     function showLoginPrompt() {
@@ -271,7 +320,7 @@
       
       let formHTML = `
         <h1>${formData.FormTitle}</h1>
-        <p class="form-description">Signed in as: ${studentEmail}</p>
+        <p class="form-description">Signed in as: <strong style="color: #00d4ff;">${studentEmail}</strong></p>
         <form id="responseForm" onsubmit="submitForm(event)">
       `;
 
@@ -285,16 +334,16 @@
 
         switch (question.type) {
           case 'text':
-            formHTML += `<input type="text" name="${question.id}" ${question.required ? 'required' : ''}>`;
+            formHTML += `<input type="text" name="${question.id}" ${question.required ? 'required' : ''} placeholder="Your answer">`;
             break;
           case 'textarea':
-            formHTML += `<textarea name="${question.id}" ${question.required ? 'required' : ''}></textarea>`;
+            formHTML += `<textarea name="${question.id}" ${question.required ? 'required' : ''} placeholder="Your detailed answer"></textarea>`;
             break;
           case 'email':
-            formHTML += `<input type="email" name="${question.id}" ${question.required ? 'required' : ''}>`;
+            formHTML += `<input type="email" name="${question.id}" ${question.required ? 'required' : ''} placeholder="your.email@example.com">`;
             break;
           case 'number':
-            formHTML += `<input type="number" name="${question.id}" ${question.required ? 'required' : ''}>`;
+            formHTML += `<input type="number" name="${question.id}" ${question.required ? 'required' : ''} placeholder="Enter a number">`;
             break;
           case 'date':
             formHTML += `<input type="date" name="${question.id}" ${question.required ? 'required' : ''}>`;
@@ -336,7 +385,7 @@
         formHTML += `</div>`;
       });
 
-      formHTML += `<button type="submit" class="submit-btn">Submit Response</button>`;
+      formHTML += `<button type="submit" class="submit-btn" id="submitBtn">Submit Response</button>`;
       formHTML += `</form>`;
 
       document.getElementById('content').innerHTML = formHTML;
@@ -344,6 +393,10 @@
 
     async function submitForm(event) {
       event.preventDefault();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
       
       const formElement = document.getElementById('responseForm');
       const formDataObj = new FormData(formElement);
@@ -360,28 +413,34 @@
         }
       });
 
-      const response = await fetch('/api/submissions/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          formId: formId,
-          studentEmail: studentEmail,
-          responseData: responseData
-        })
-      });
+      try {
+        const response = await fetch('/api/submissions/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            formId: formId,
+            studentEmail: studentEmail,
+            responseData: responseData
+          })
+        });
 
-      const result = await response.json();
-      
-      if (result.error) {
-        showError(result.error);
-      } else {
-        showSuccess('Thank you! Your response has been submitted successfully.');
+        const result = await response.json();
+        
+        if (result.error) {
+          showError(result.error);
+        } else {
+          showSuccess('✅ Thank you! Your response has been submitted successfully.');
+        }
+      } catch (error) {
+        showError('Failed to submit form. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Response';
       }
     }
 
     function showError(message) {
       document.getElementById('content').innerHTML = `
-        <div class="error-message">${message}</div>
+        <div class="error-message">⚠️ ${message}</div>
       `;
     }
 

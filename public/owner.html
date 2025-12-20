@@ -8,34 +8,33 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 100%);
       color: #fff;
       min-height: 100vh;
       padding: 20px;
     }
     
     .header {
-      background: linear-gradient(135deg, #404050, #606070);
-      padding: 20px;
-      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 25px;
+      border-radius: 12px;
       margin-bottom: 30px;
-      border: 2px solid #00d4ff;
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+      backdrop-filter: blur(10px);
     }
     
     h1 {
-      background: linear-gradient(45deg, #00d4ff, #7b2cbf);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #00d4ff;
       font-size: 2.5em;
+      margin-bottom: 5px;
     }
     
     .section {
-      background: #2a2a3e;
-      padding: 25px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #404050;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
     
     h2 {
@@ -46,10 +45,10 @@
     
     input {
       width: 100%;
-      padding: 12px;
-      background: #3a3a4e;
-      border: 2px solid #505060;
-      border-radius: 5px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
       color: #fff;
       font-size: 1em;
       margin-bottom: 15px;
@@ -59,26 +58,26 @@
     input:focus {
       outline: none;
       border-color: #00d4ff;
-      box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+      background: rgba(255, 255, 255, 0.08);
     }
     
     button {
-      background: linear-gradient(135deg, #404050, #606070);
-      color: #fff;
-      border: 2px solid #00d4ff;
+      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      color: #0a0e27;
+      border: none;
       padding: 12px 30px;
       font-size: 1em;
-      border-radius: 5px;
+      font-weight: 600;
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s;
-      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
     }
     
     button:hover {
-      background: linear-gradient(135deg, #505060, #707080);
-      border-color: #7b2cbf;
-      box-shadow: 0 0 20px rgba(123, 44, 191, 0.5);
       transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5);
     }
     
     .admin-list {
@@ -88,14 +87,23 @@
     }
     
     .admin-card {
-      background: #3a3a4e;
-      padding: 15px;
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 10px;
       border-left: 4px solid #00d4ff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s;
+    }
+
+    .admin-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateX(5px);
     }
     
     .admin-email {
-      font-size: 1.1em;
+      font-size: 1.2em;
       color: #00d4ff;
       margin-bottom: 5px;
     }
@@ -104,26 +112,38 @@
       color: #b0b0c0;
       font-size: 0.9em;
     }
-    
-    .message {
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 10px;
+
+    .remove-btn {
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      color: white;
+      padding: 10px 20px;
+      font-size: 0.9em;
+    }
+
+    .remove-btn:hover {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
     }
     
-    .success { background: #1a4d2e; color: #4ade80; }
-    .error { background: #4d1a1a; color: #f87171; }
+    .message {
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-weight: 500;
+    }
+    
+    .success { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #4ade80; }
+    .error { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #f87171; }
   </style>
 </head>
 <body>
   <div class="header">
     <h1>Owner Dashboard</h1>
-    <p>Welcome, <span id="ownerEmail"></span></p>
+    <p style="font-size: 1.1em; color: #b0b0c0;">Welcome, <span id="ownerEmail" style="color: #00d4ff;"></span></p>
   </div>
 
   <div class="section">
     <h2>Add New Admin</h2>
-    <input type="email" id="newAdminEmail" placeholder="Enter admin Gmail">
+    <input type="email" id="newAdminEmail" placeholder="Enter admin Gmail address">
     <button onclick="addAdmin()">Add Admin</button>
     <div id="addMessage"></div>
   </div>
@@ -174,13 +194,30 @@
       if (data.admins && data.admins.length > 0) {
         adminList.innerHTML = data.admins.map(admin => `
           <div class="admin-card">
-            <div class="admin-email">${admin.Email}</div>
-            <div class="admin-stats">Added: ${new Date(admin.CreatedAt).toLocaleDateString()}</div>
+            <div>
+              <div class="admin-email">${admin.Email}</div>
+              <div class="admin-stats">Added: ${new Date(admin.CreatedAt).toLocaleDateString()}</div>
+            </div>
+            <button class="remove-btn" onclick="removeAdmin('${admin.Email}')">Remove Admin</button>
           </div>
         `).join('');
       } else {
         adminList.innerHTML = '<p style="color: #b0b0c0;">No admins added yet.</p>';
       }
+    }
+
+    async function removeAdmin(adminEmail) {
+      if (!confirm(`Remove ${adminEmail} from admin access?`)) return;
+      
+      const response = await fetch('/api/admin/remove-admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ownerEmail, adminEmail })
+      });
+
+      const data = await response.json();
+      alert(data.message || data.error);
+      loadAdmins();
     }
 
     function showMessage(elementId, message, type) {

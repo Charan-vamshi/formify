@@ -3,16 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formify - Login</title>
+  <title>Formify - AMC Engineering College</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { 
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       min-height: 100vh;
-      background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 100%);
+      background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 50%, #2a2d4a 100%);
       display: flex;
       flex-direction: column;
       color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('/amc-logo.png') no-repeat center center;
+      background-size: 60%;
+      filter: blur(8px) opacity(0.1);
+      z-index: 0;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%);
     }
     
     .hero {
@@ -21,78 +37,128 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 40px 20px;
+      padding: 60px 20px;
       text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .college-badge {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      padding: 15px 30px;
+      border-radius: 50px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+    }
+
+    .college-name {
+      font-size: 1.4em;
+      font-weight: 600;
+      color: #00d4ff;
+      letter-spacing: 1px;
     }
     
     h1 {
-      font-size: 4em;
-      background: linear-gradient(45deg, #00d4ff, #7b2cbf);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 5em;
+      font-weight: 700;
+      color: #ffffff;
       margin-bottom: 20px;
-      animation: glow 2s ease-in-out infinite alternate;
-    }
-    
-    @keyframes glow {
-      from { filter: drop-shadow(0 0 10px #00d4ff); }
-      to { filter: drop-shadow(0 0 20px #7b2cbf); }
+      text-shadow: 0 0 40px rgba(0, 212, 255, 0.5);
+      letter-spacing: 3px;
     }
     
     .subtitle {
-      font-size: 1.5em;
+      font-size: 1.6em;
       color: #b0b0c0;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
+      font-weight: 300;
     }
-    
-    .college-info {
-      margin-bottom: 50px;
+
+    .department-info {
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 4px solid #7b2cbf;
+      padding: 25px 40px;
+      border-radius: 10px;
+      margin: 30px 0 50px 0;
+      backdrop-filter: blur(10px);
+      max-width: 600px;
     }
-    
-    .college-name {
-      font-size: 1.8em;
-      color: #00d4ff;
-      margin-bottom: 10px;
+
+    .department-name {
+      font-size: 1.3em;
+      color: #ffffff;
+      margin-bottom: 12px;
+      font-weight: 500;
     }
-    
+
     .hod-info {
-      font-size: 1.2em;
+      font-size: 1.1em;
       color: #9090a0;
+      font-weight: 300;
+    }
+
+    .hod-name {
+      color: #00d4ff;
+      font-weight: 500;
     }
     
     .login-btn {
-      background: linear-gradient(135deg, #404050, #606070);
-      color: #fff;
-      border: 2px solid #00d4ff;
-      padding: 18px 50px;
+      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      color: #0a0e27;
+      border: none;
+      padding: 18px 60px;
       font-size: 1.2em;
-      border-radius: 8px;
+      font-weight: 600;
+      border-radius: 50px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+      transition: all 0.4s ease;
+      box-shadow: 0 8px 30px rgba(0, 212, 255, 0.4);
       text-decoration: none;
       display: inline-block;
+      letter-spacing: 1px;
     }
     
     .login-btn:hover {
-      background: linear-gradient(135deg, #505060, #707080);
-      border-color: #7b2cbf;
-      box-shadow: 0 0 30px rgba(123, 44, 191, 0.5);
       transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0, 212, 255, 0.6);
+      background: linear-gradient(135deg, #00e5ff, #00b8e6);
+    }
+
+    .footer-text {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9em;
+      color: #6a6a7a;
+      z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 3em; }
+      .subtitle { font-size: 1.2em; }
+      .college-name { font-size: 1.1em; }
+      .department-info { padding: 20px; }
     }
   </style>
 </head>
 <body>
   <div class="hero">
+    <div class="college-badge">
+      <div class="college-name">AMC ENGINEERING COLLEGE BENGALURU</div>
+    </div>
+
     <h1>FORMIFY</h1>
     <p class="subtitle">Advanced Form Management System</p>
     
-    <div class="college-info">
-      <div class="college-name">AMC Engineering College Bangalore</div>
-      <div class="hod-info">Prof. Nandeeshwar - HOD, CSE AIML</div>
+    <div class="department-info">
+      <div class="department-name">Department of Computer Science & Engineering</div>
+      <div class="department-name" style="font-size: 1.1em; color: #7b2cbf;">(Artificial Intelligence & Machine Learning)</div>
+      <div class="hod-info">Under the guidance of <span class="hod-name">Dr. Nandeeshwar</span>, HOD</div>
     </div>
     
-    <a href="/auth/google" class="login-btn">Login with Google</a>
+    <a href="/auth/google" class="login-btn">ACCESS SYSTEM</a>
   </div>
+
+  <div class="footer-text">Secure Authentication • Role-Based Access • Real-Time Analytics</div>
 </body>
 </html>
