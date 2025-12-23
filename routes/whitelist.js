@@ -27,6 +27,19 @@ router.post('/check', async (req, res) => {
   try {
     const { formId, studentEmail } = req.body;
     
+    // Check if form requires whitelist
+    const [form] = await pool.query('SELECT RequireWhitelist FROM Forms WHERE FormID = ?', [formId]);
+    
+    if (form.length === 0) {
+      return res.status(404).json({ error: 'Form not found' });
+    }
+    
+    // If public form, allow access
+    if (!form[0].RequireWhitelist) {
+      return res.json({ message: 'Access granted' });
+    }
+    
+    // Check whitelist for private forms
     const [rows] = await pool.query(
       'SELECT * FROM Whitelists WHERE FormID = ? AND StudentEmail = ?',
       [formId, studentEmail]
