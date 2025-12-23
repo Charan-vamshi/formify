@@ -6,7 +6,7 @@ const router = express.Router();
 // Create a new form
 router.post('/create', async (req, res) => {
   try {
-    const { adminEmail, formTitle, formStructure } = req.body;
+    const { adminEmail, formTitle, formStructure, requireWhitelist } = req.body;
     
     // Verify admin
     const [admin] = await pool.query('SELECT * FROM Users WHERE Email = ? AND Role = ?', [adminEmail, 'Admin']);
@@ -16,8 +16,8 @@ router.post('/create', async (req, res) => {
 
     // Create form
     const [result] = await pool.query(
-      'INSERT INTO Forms (AdminID, FormTitle, FormStructure) VALUES (?, ?, ?)',
-      [admin[0].UserID, formTitle, JSON.stringify(formStructure)]
+      'INSERT INTO Forms (AdminID, FormTitle, FormStructure, RequireWhitelist) VALUES (?, ?, ?, ?)',
+      [admin[0].UserID, formTitle, JSON.stringify(formStructure), requireWhitelist !== false]
     );
 
     res.json({ message: 'Form created', formId: result.insertId });
