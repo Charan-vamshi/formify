@@ -288,8 +288,13 @@
         </label>
       </div>
       <div id="whitelistUploadSection">
+        <h4 style="color: #00d4ff; margin-bottom: 10px;">Whitelist (Allowed Emails)</h4>
         <input type="file" id="whitelistFile" accept=".csv,.xlsx">
-        <p style="color: #b0b0c0; font-size: 0.9em; margin-top: 8px;">Upload a CSV/Excel file with student emails (one per line)</p>
+        <p style="color: #b0b0c0; font-size: 0.9em; margin-top: 8px; margin-bottom: 20px;">Upload CSV/Excel with allowed student emails</p>
+        
+        <h4 style="color: #f87171; margin-bottom: 10px;">Blacklist (Blocked Emails)</h4>
+        <input type="file" id="blacklistFile" accept=".csv,.xlsx">
+        <p style="color: #b0b0c0; font-size: 0.9em; margin-top: 8px;">Upload CSV/Excel with blocked student emails (higher priority)</p>
       </div>
       <p id="publicAccessNote" style="display: none; color: #4ade80; background: rgba(34, 197, 94, 0.1); padding: 12px; border-radius: 8px; border: 1px solid #4ade80; margin-top: 10px;">
         ✓ Anyone with the link can access and submit this form
@@ -514,10 +519,28 @@
           reader.readAsText(whitelistFile);
         }
 
+        // Handle blacklist upload
+        const blacklistFile = document.getElementById('blacklistFile').files[0];
+        if (blacklistFile) {
+          const blackReader = new FileReader();
+          blackReader.onload = async (e) => {
+            const text = e.target.result;
+            const emails = text.split(/[\n,]/).map(e => e.trim()).filter(e => e);
+            
+            await fetch('/api/whitelist/upload-blacklist', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ formId: formData.formId, emails })
+            });
+          };
+          blackReader.readAsText(blacklistFile);
+        }
+
         showMessage('createMessage', 'Form created successfully!', 'success');
         
         document.getElementById('formTitle').value = '';
         document.getElementById('whitelistFile').value = '';
+        document.getElementById('blacklistFile').value = '';
         document.getElementById('requireWhitelist').checked = true;
         toggleWhitelistUpload();
         document.getElementById('questionsContainer').innerHTML = '';
