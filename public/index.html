@@ -6,10 +6,29 @@
   <title>Formify - AMC Engineering College</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     body { 
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       min-height: 100vh;
-      background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 50%, #2a2d4a 100%);
+      background: linear-gradient(-45deg, #0a0e27, #1a1d3a, #2a2d4a, #1a2645);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
       display: flex;
       flex-direction: column;
       color: #fff;
@@ -25,10 +44,33 @@
       right: 0;
       bottom: 0;
       background: url('/amc-logo.png') no-repeat center center;
-      background-size: 60%;
-      filter: blur(8px) opacity(0.1);
+      background-size: 70%;
+      filter: blur(10px) opacity(0.08);
       z-index: 0;
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 100%);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(0, 212, 255, 0.5);
+      border-radius: 50%;
+      animation: rise 15s infinite ease-in;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-100vh) scale(1); opacity: 0; }
     }
     
     .hero {
@@ -44,121 +86,212 @@
     }
 
     .college-badge {
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(0, 212, 255, 0.3);
-      padding: 15px 30px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(0, 212, 255, 0.4);
+      padding: 18px 35px;
       border-radius: 50px;
-      margin-bottom: 30px;
-      backdrop-filter: blur(10px);
+      margin-bottom: 40px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 212, 255, 0.2);
+      animation: fadeInUp 0.8s ease;
+      transition: all 0.4s ease;
+    }
+
+    .college-badge:hover {
+      transform: scale(1.05);
+      border-color: #00d4ff;
+      box-shadow: 0 12px 48px rgba(0, 212, 255, 0.4);
     }
 
     .college-name {
-      font-size: 1.4em;
+      font-size: 1.5em;
       font-weight: 600;
-      color: #00d4ff;
-      letter-spacing: 1px;
+      background: linear-gradient(135deg, #00d4ff, #00e5ff, #00d4ff);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 2px;
+      animation: gradientShift 3s ease infinite;
     }
     
     h1 {
-      font-size: 5em;
-      font-weight: 700;
-      color: #ffffff;
-      margin-bottom: 20px;
-      text-shadow: 0 0 40px rgba(0, 212, 255, 0.5);
-      letter-spacing: 3px;
+      font-size: 6em;
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff, #00d4ff, #ffffff);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 25px;
+      letter-spacing: 5px;
+      animation: fadeInUp 1s ease, gradientShift 4s ease infinite;
+      text-shadow: 0 0 80px rgba(0, 212, 255, 0.3);
     }
     
     .subtitle {
-      font-size: 1.6em;
+      font-size: 1.8em;
       color: #b0b0c0;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       font-weight: 300;
+      animation: fadeInUp 1.2s ease;
+      letter-spacing: 1px;
     }
 
     .department-info {
-      background: rgba(255, 255, 255, 0.03);
-      border-left: 4px solid #7b2cbf;
-      padding: 25px 40px;
-      border-radius: 10px;
-      margin: 30px 0 50px 0;
-      backdrop-filter: blur(10px);
-      max-width: 600px;
+      background: rgba(0, 0, 0, 0.3);
+      border-left: 5px solid #7b2cbf;
+      padding: 30px 50px;
+      border-radius: 15px;
+      margin: 35px 0 60px 0;
+      backdrop-filter: blur(20px);
+      max-width: 700px;
+      box-shadow: 0 10px 40px rgba(123, 44, 191, 0.2);
+      animation: fadeInUp 1.4s ease;
+      transition: all 0.4s ease;
+    }
+
+    .department-info:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 50px rgba(123, 44, 191, 0.4);
+      border-left-width: 8px;
     }
 
     .department-name {
-      font-size: 1.3em;
+      font-size: 1.4em;
       color: #ffffff;
-      margin-bottom: 12px;
-      font-weight: 500;
+      margin-bottom: 15px;
+      font-weight: 600;
     }
 
     .hod-info {
-      font-size: 1.1em;
-      color: #9090a0;
+      font-size: 1.15em;
+      color: #b0b0c0;
       font-weight: 300;
     }
 
     .hod-name {
       color: #00d4ff;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 1.1em;
     }
     
     .login-btn {
       background: linear-gradient(135deg, #00d4ff, #0099cc);
       color: #0a0e27;
       border: none;
-      padding: 18px 60px;
-      font-size: 1.2em;
-      font-weight: 600;
+      padding: 20px 70px;
+      font-size: 1.3em;
+      font-weight: 700;
       border-radius: 50px;
       cursor: pointer;
-      transition: all 0.4s ease;
-      box-shadow: 0 8px 30px rgba(0, 212, 255, 0.4);
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 10px 40px rgba(0, 212, 255, 0.4);
       text-decoration: none;
       display: inline-block;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
+      animation: fadeInUp 1.6s ease;
+      position: relative;
+      overflow: hidden;
     }
-    
+
+    .login-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .login-btn:hover::before {
+      width: 400px;
+      height: 400px;
+    }
+
     .login-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 40px rgba(0, 212, 255, 0.6);
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 15px 60px rgba(0, 212, 255, 0.6);
       background: linear-gradient(135deg, #00e5ff, #00b8e6);
+    }
+
+    .login-btn:active {
+      transform: translateY(-2px) scale(1.02);
     }
 
     .footer-text {
       position: absolute;
-      bottom: 20px;
-      font-size: 0.9em;
+      bottom: 30px;
+      font-size: 1em;
       color: #6a6a7a;
       z-index: 1;
+      animation: fadeInUp 2s ease;
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-text span {
+      padding: 5px 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .footer-text span:hover {
+      color: #00d4ff;
+      transform: translateY(-3px);
     }
 
     @media (max-width: 768px) {
-      h1 { font-size: 3em; }
-      .subtitle { font-size: 1.2em; }
-      .college-name { font-size: 1.1em; }
-      .department-info { padding: 20px; }
+      h1 { font-size: 3.5em; letter-spacing: 3px; }
+      .subtitle { font-size: 1.3em; }
+      .college-name { font-size: 1.2em; }
+      .department-info { padding: 25px 30px; }
+      .login-btn { padding: 18px 50px; font-size: 1.1em; }
+      .footer-text { flex-direction: column; gap: 10px; font-size: 0.9em; }
     }
   </style>
 </head>
 <body>
+  <div class="particles" id="particles"></div>
+
   <div class="hero">
     <div class="college-badge">
       <div class="college-name">AMC ENGINEERING COLLEGE BENGALURU</div>
     </div>
 
     <h1>FORMIFY</h1>
-    <p class="subtitle">Advanced Form Management System</p>
+    <p class="subtitle">Next-Generation Form Management Platform</p>
     
     <div class="department-info">
       <div class="department-name">Department of Computer Science & Engineering</div>
-      <div class="department-name" style="font-size: 1.1em; color: #7b2cbf;">(Artificial Intelligence & Machine Learning)</div>
-      <div class="hod-info">Under the guidance of <span class="hod-name">Dr. Nandeeshwar</span>, HOD</div>
+      <div class="department-name" style="font-size: 1.15em; color: #c084fc;">(Artificial Intelligence & Machine Learning)</div>
+      <div class="hod-info">Under the esteemed guidance of <span class="hod-name">Dr. Nandeeshwar</span>, Head of Department</div>
     </div>
     
     <a href="/auth/google" class="login-btn">ACCESS SYSTEM</a>
   </div>
 
-  <div class="footer-text">Secure Authentication • Role-Based Access • Real-Time Analytics</div>
+  <div class="footer-text">
+    <span>🔒 Secure Authentication</span>
+    <span>👥 Role-Based Access</span>
+    <span>📊 Real-Time Analytics</span>
+  </div>
+
+  <script>
+    // Create floating particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 15 + 's';
+      particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+      particlesContainer.appendChild(particle);
+    }
+  </script>
 </body>
 </html>
