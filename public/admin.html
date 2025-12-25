@@ -622,37 +622,9 @@
       loadForms();
     }
 
-    async function viewSubmissions(formId) {
-      const response = await fetch('/api/submissions/get-submissions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ formId, adminEmail })
-      });
-
-      const data = await response.json();
-      const modal = document.getElementById('submissionsModal');
-      const content = document.getElementById('submissionsContent');
-      
-      if (data.submissions && data.submissions.length > 0) {
-        content.innerHTML = `
-          <button onclick="downloadCSV(${formId})" style="margin-bottom: 20px; padding: 12px 25px;">📥 Download as CSV</button>
-        ` + data.submissions.map(sub => {
-          const responseData = typeof sub.ResponseData === 'string' ? JSON.parse(sub.ResponseData) : sub.ResponseData;
-          return `
-            <div style="background: rgba(255, 255, 255, 0.05); padding: 15px; margin: 15px 0; border-radius: 8px; border-left: 3px solid #00d4ff;">
-              <strong style="color: #00d4ff;">${sub.StudentEmail}</strong><br>
-              <small style="color: #b0b0c0;">${new Date(sub.SubmittedAt).toLocaleString()}</small><br>
-              <pre style="margin-top: 10px; color: #fff; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; overflow-x: auto;">${JSON.stringify(responseData, null, 2)}</pre>
-            </div>
-          `;
-        }).join('');
-      } else {
-        content.innerHTML = '<p style="text-align: center; padding: 30px; color: #b0b0c0;">No submissions yet.</p>';
-      }
-      
-      modal.style.display = 'flex';
+    function viewSubmissions(formId) {
+      window.location.href = `/responses.html?formId=${formId}&adminEmail=${adminEmail}`;
     }
-
     async function downloadCSV(formId) {
       const response = await fetch('/api/submissions/get-submissions', {
         method: 'POST',
