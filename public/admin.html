@@ -6,126 +6,215 @@
   <title>Admin Dashboard - Formify</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 100%);
+      background: linear-gradient(-45deg, #0a0e27, #1a1d3a, #141829, #1e2340);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
       color: #fff;
       min-height: 100vh;
-      padding: 20px;
+      padding: 25px;
     }
     
     .header {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 25px;
-      border-radius: 12px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      border-radius: 20px;
       margin-bottom: 30px;
-      border: 1px solid rgba(0, 212, 255, 0.2);
-      backdrop-filter: blur(10px);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.6s ease;
+      transition: all 0.3s ease;
+    }
+
+    .header:hover {
+      box-shadow: 0 12px 48px rgba(0, 212, 255, 0.2);
+      transform: translateY(-2px);
     }
     
     h1 {
-      color: #00d4ff;
-      font-size: 2.5em;
-      margin-bottom: 5px;
+      background: linear-gradient(135deg, #00d4ff, #00e5ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 2.8em;
+      margin-bottom: 8px;
+      font-weight: 800;
     }
     
     .section {
-      background: rgba(255, 255, 255, 0.03);
-      padding: 30px;
-      border-radius: 12px;
-      margin-bottom: 25px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.2);
+      padding: 35px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      animation: slideIn 0.8s ease;
+      transition: all 0.3s ease;
+    }
+
+    .section:hover {
+      border-color: rgba(0, 212, 255, 0.3);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     }
     
     h2 {
       color: #00d4ff;
-      margin-bottom: 20px;
-      font-size: 1.8em;
+      margin-bottom: 25px;
+      font-size: 2em;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2::before {
+      content: '';
+      width: 5px;
+      height: 35px;
+      background: linear-gradient(180deg, #00d4ff, #7b2cbf);
+      border-radius: 10px;
     }
     
     input, textarea, select {
       width: 100%;
-      padding: 14px;
+      padding: 16px;
       background: rgba(255, 255, 255, 0.05);
       border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
+      border-radius: 12px;
       color: #fff;
       font-size: 1em;
-      margin-bottom: 15px;
-      transition: all 0.3s;
+      margin-bottom: 18px;
+      transition: all 0.3s ease;
       font-family: inherit;
     }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #00d4ff;
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
     select {
       color-scheme: dark;
     }
 
     select option {
-      background: #0a0e27 !important;
+      background: #1a1d3a !important;
       color: #ffffff !important;
-    }    
-    input:focus, textarea:focus, select:focus {
-      outline: none;
-      border-color: #00d4ff;
-      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-      background: rgba(255, 255, 255, 0.08);
+      padding: 10px !important;
     }
     
     button {
       background: linear-gradient(135deg, #00d4ff, #0099cc);
       color: #0a0e27;
       border: none;
-      padding: 12px 30px;
-      font-size: 1em;
-      font-weight: 600;
-      border-radius: 8px;
+      padding: 14px 32px;
+      font-size: 1.05em;
+      font-weight: 700;
+      border-radius: 12px;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
-      margin-right: 10px;
+      margin-right: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.5s, height 0.5s;
+    }
+
+    button:hover::before {
+      width: 300px;
+      height: 300px;
     }
     
     button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.5);
+    }
+
+    button:active {
+      transform: translateY(-1px);
     }
     
     .question-card {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 25px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      border-left: 4px solid #00d4ff;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 28px;
+      border-radius: 16px;
+      margin-bottom: 22px;
+      border-left: 5px solid #00d4ff;
+      transition: all 0.3s ease;
+      animation: slideIn 0.5s ease;
+    }
+
+    .question-card:hover {
+      background: rgba(0, 0, 0, 0.4);
+      transform: translateX(5px);
+      box-shadow: 0 8px 24px rgba(0, 212, 255, 0.2);
     }
     
     .question-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 18px;
     }
     
     .question-number {
-      background: #00d4ff;
+      background: linear-gradient(135deg, #00d4ff, #00b8e6);
       color: #0a0e27;
-      padding: 8px 20px;
-      border-radius: 20px;
-      font-weight: bold;
+      padding: 10px 22px;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 1.05em;
+      box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
     }
     
     .delete-question {
       background: linear-gradient(135deg, #dc2626, #991b1b);
       color: white;
-      padding: 8px 15px;
+      padding: 10px 18px;
     }
     
     .delete-question:hover {
       background: linear-gradient(135deg, #ef4444, #dc2626);
+      box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
     }
     
     .option-group {
       display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 12px;
+      margin-bottom: 12px;
       align-items: center;
     }
     
@@ -134,13 +223,17 @@
     }
     
     .add-option-btn, .remove-option-btn {
-      padding: 8px 15px;
-      font-size: 0.9em;
+      padding: 10px 18px;
+      font-size: 0.95em;
       min-width: auto;
     }
     
     .add-option-btn {
       background: linear-gradient(135deg, #10b981, #059669);
+    }
+
+    .add-option-btn:hover {
+      background: linear-gradient(135deg, #34d399, #10b981);
     }
     
     .remove-option-btn {
@@ -151,131 +244,167 @@
     .required-toggle {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-top: 15px;
+      gap: 12px;
+      margin-top: 18px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .required-toggle:hover {
+      background: rgba(255, 255, 255, 0.06);
     }
     
     .required-toggle input[type="checkbox"] {
       width: auto;
       margin: 0;
       cursor: pointer;
+      transform: scale(1.3);
     }
     
     .add-question-btn {
       width: 100%;
       background: linear-gradient(135deg, #10b981, #059669);
-      margin-top: 20px;
+      margin-top: 25px;
+      padding: 18px;
+      font-size: 1.15em;
+    }
+
+    .add-question-btn:hover {
+      background: linear-gradient(135deg, #34d399, #10b981);
     }
     
     .form-list {
       display: grid;
-      gap: 15px;
-      margin-top: 20px;
+      gap: 20px;
+      margin-top: 25px;
     }
     
     .form-card {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px;
-      border-radius: 10px;
-      border-left: 4px solid #00d4ff;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 25px;
+      border-radius: 16px;
+      border-left: 5px solid #00d4ff;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: all 0.3s;
+      transition: all 0.3s ease;
+      animation: slideIn 0.6s ease;
     }
 
     .form-card:hover {
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateX(5px);
+      background: rgba(0, 0, 0, 0.4);
+      transform: translateX(8px);
+      box-shadow: 0 8px 32px rgba(0, 212, 255, 0.2);
+      border-left-width: 8px;
     }
     
     .form-title {
-      font-size: 1.3em;
+      font-size: 1.4em;
       color: #00d4ff;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      font-weight: 700;
     }
     
     .form-status {
       color: #b0b0c0;
-      font-size: 0.95em;
+      font-size: 1em;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .form-status strong {
+      color: #00d4ff;
     }
     
     .form-actions button {
-      padding: 10px 18px;
-      font-size: 0.9em;
+      padding: 12px 20px;
+      font-size: 0.95em;
     }
     
     .message {
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 15px;
-      font-weight: 500;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 18px;
+      font-weight: 600;
+      animation: slideIn 0.4s ease;
     }
     
-    .success { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #4ade80; }
-    .error { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #f87171; }
-    
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.9);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+    .success { 
+      background: rgba(34, 197, 94, 0.2); 
+      color: #4ade80; 
+      border: 2px solid #4ade80;
+      box-shadow: 0 4px 20px rgba(34, 197, 94, 0.2);
     }
     
-    .modal-content {
-      background: rgba(26, 29, 58, 0.95);
-      padding: 35px;
-      border-radius: 15px;
-      max-width: 700px;
-      max-height: 85vh;
-      overflow-y: auto;
-      width: 90%;
-      border: 2px solid rgba(0, 212, 255, 0.3);
-      backdrop-filter: blur(10px);
-    }
-    
-    .close-btn {
-      float: right;
-      font-size: 1.8em;
-      cursor: pointer;
-      color: #00d4ff;
-      transition: all 0.3s;
-    }
-
-    .close-btn:hover {
-      color: #00e5ff;
-      transform: scale(1.1);
+    .error { 
+      background: rgba(239, 68, 68, 0.2); 
+      color: #f87171; 
+      border: 2px solid #f87171;
+      box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
     }
 
     .whitelist-section {
-      margin-top: 25px;
-      padding-top: 25px;
+      margin-top: 30px;
+      padding-top: 30px;
       border-top: 2px solid rgba(255, 255, 255, 0.1);
     }
 
     .whitelist-section h3 {
       color: #00d4ff;
-      margin-bottom: 15px;
-      font-size: 1.3em;
+      margin-bottom: 18px;
+      font-size: 1.5em;
+      font-weight: 700;
+    }
+
+    .whitelist-section h4 {
+      color: #00d4ff;
+      margin-bottom: 12px;
+      font-size: 1.2em;
+      font-weight: 600;
     }
 
     .loading {
       text-align: center;
       color: #00d4ff;
-      padding: 20px;
+      padding: 25px;
+      font-size: 1.1em;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(0, 212, 255, 0.3);
+      border-top-color: #00d4ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @media (max-width: 768px) {
+      .form-card {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+      }
+      .form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="header">
     <h1>Admin Dashboard</h1>
-    <p style="font-size: 1.1em; color: #b0b0c0;">Welcome, <span id="adminEmail" style="color: #00d4ff;"></span></p>
+    <p style="font-size: 1.2em; color: #b0b0c0; margin-top: 8px;">Welcome, <span id="adminEmail" style="color: #00d4ff; font-weight: 600;"></span></p>
   </div>
 
   <div class="section">
@@ -288,41 +417,33 @@
 
     <div class="whitelist-section">
       <h3>Access Control</h3>
-      <div style="margin-bottom: 20px;">
-        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 1.1em;">
-          <input type="checkbox" id="requireWhitelist" checked onchange="toggleWhitelistUpload()" style="width: auto; margin: 0; cursor: pointer;">
+      <div style="margin-bottom: 25px;">
+        <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-size: 1.15em; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 10px; transition: all 0.3s;">
+          <input type="checkbox" id="requireWhitelist" checked onchange="toggleWhitelistUpload()" style="width: auto; margin: 0; cursor: pointer; transform: scale(1.3);">
           <span>Require Whitelist (Restrict access to specific emails)</span>
         </label>
       </div>
       <div id="whitelistUploadSection">
-        <h4 style="color: #00d4ff; margin-bottom: 10px;">Whitelist (Allowed Emails)</h4>
+        <h4 style="color: #4ade80;">Whitelist (Allowed Emails)</h4>
         <input type="file" id="whitelistFile" accept=".csv,.xlsx">
-        <p style="color: #b0b0c0; font-size: 0.9em; margin-top: 8px; margin-bottom: 20px;">Upload CSV/Excel with allowed student emails</p>
+        <p style="color: #b0b0c0; font-size: 0.95em; margin-top: 8px; margin-bottom: 25px;">Upload CSV/Excel with allowed student emails</p>
         
-        <h4 style="color: #f87171; margin-bottom: 10px;">Blacklist (Blocked Emails)</h4>
+        <h4 style="color: #f87171;">Blacklist (Blocked Emails)</h4>
         <input type="file" id="blacklistFile" accept=".csv,.xlsx">
-        <p style="color: #b0b0c0; font-size: 0.9em; margin-top: 8px;">Upload CSV/Excel with blocked student emails (higher priority)</p>
+        <p style="color: #b0b0c0; font-size: 0.95em; margin-top: 8px;">Upload CSV/Excel with blocked student emails (higher priority than whitelist)</p>
       </div>
-      <p id="publicAccessNote" style="display: none; color: #4ade80; background: rgba(34, 197, 94, 0.1); padding: 12px; border-radius: 8px; border: 1px solid #4ade80; margin-top: 10px;">
-        ✓ Anyone with the link can access and submit this form
+      <p id="publicAccessNote" style="display: none; color: #4ade80; background: rgba(34, 197, 94, 0.15); padding: 15px; border-radius: 12px; border: 2px solid #4ade80; margin-top: 15px; font-weight: 600;">
+        ✓ Public Form: Anyone with the link can access and submit
       </p>
     </div>
 
-    <button onclick="createForm()" style="margin-top: 25px; padding: 15px 40px; font-size: 1.1em;">Create Form</button>
+    <button onclick="createForm()" style="margin-top: 30px; padding: 18px 45px; font-size: 1.2em;">Create Form</button>
     <div id="createMessage"></div>
   </div>
 
   <div class="section">
     <h2>My Forms</h2>
-    <div class="form-list" id="formList"><div class="loading">Loading your forms...</div></div>
-  </div>
-
-  <div id="submissionsModal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeModal()">&times;</span>
-      <h2 style="margin-bottom: 20px;">Form Submissions</h2>
-      <div id="submissionsContent"></div>
-    </div>
+    <div class="form-list" id="formList"><div class="loading"><span class="spinner"></span> Loading your forms...</div></div>
   </div>
 
   <script>
@@ -399,7 +520,7 @@
       if (type === 'multiple' || type === 'checkbox' || type === 'dropdown') {
         optionsDiv.style.display = 'block';
         optionsDiv.innerHTML = `
-          <h4 style="color: #00d4ff; margin: 15px 0 10px 0;">Options:</h4>
+          <h4 style="color: #00d4ff; margin: 18px 0 12px 0;">Options:</h4>
           <div id="${questionId}-options-list">
             <div class="option-group">
               <input type="text" placeholder="Option 1" class="option-input">
@@ -451,6 +572,7 @@
       const formTitle = document.getElementById('formTitle').value;
       const requireWhitelist = document.getElementById('requireWhitelist').checked;
       const whitelistFile = document.getElementById('whitelistFile').files[0];
+      const blacklistFile = document.getElementById('blacklistFile').files[0];
 
       if (!formTitle) {
         showMessage('createMessage', 'Please enter a form title', 'error');
@@ -526,8 +648,6 @@
           reader.readAsText(whitelistFile);
         }
 
-        // Handle blacklist upload
-        const blacklistFile = document.getElementById('blacklistFile').files[0];
         if (blacklistFile) {
           const blackReader = new FileReader();
           blackReader.onload = async (e) => {
@@ -543,7 +663,7 @@
           blackReader.readAsText(blacklistFile);
         }
 
-        showMessage('createMessage', 'Form created successfully!', 'success');
+        showMessage('createMessage', '✅ Form created successfully!', 'success');
         
         document.getElementById('formTitle').value = '';
         document.getElementById('whitelistFile').value = '';
@@ -571,7 +691,6 @@
       const formList = document.getElementById('formList');
       
       if (data.forms && data.forms.length > 0) {
-        // Get response counts for all forms
         const formsWithCounts = await Promise.all(data.forms.map(async (form) => {
           try {
             const countRes = await fetch('/api/submissions/get-count', {
@@ -592,10 +711,10 @@
             <div>
               <div class="form-title">${form.FormTitle}</div>
               <div class="form-status">
-                Status: ${form.IsLive ? '🟢 Live' : '🟡 Draft'} | 
-                Access: ${form.RequireWhitelist ? '🔒 Whitelist' : '🌐 Public'} | 
-                Responses: <strong style="color: #00d4ff;">${form.responseCount}</strong> | 
-                Created: ${new Date(form.CreatedAt).toLocaleDateString()}
+                <span>Status: ${form.IsLive ? '🟢 Live' : '🟡 Draft'}</span>
+                <span>Access: ${form.RequireWhitelist ? '🔒 Whitelist' : '🌐 Public'}</span>
+                <span>Responses: <strong>${form.responseCount}</strong></span>
+                <span>Created: ${new Date(form.CreatedAt).toLocaleDateString()}</span>
               </div>
             </div>
             <div class="form-actions">
@@ -607,7 +726,7 @@
           </div>
         `).join('');
       } else {
-        formList.innerHTML = '<p style="color: #b0b0c0; text-align: center; padding: 30px;">No forms created yet. Create your first form above!</p>';
+        formList.innerHTML = '<p style="color: #b0b0c0; text-align: center; padding: 40px; font-size: 1.1em;">No forms created yet. Create your first form above!</p>';
       }
     }
 
@@ -632,36 +751,6 @@
     function viewSubmissions(formId) {
       window.location.href = `/responses.html?formId=${formId}&adminEmail=${adminEmail}`;
     }
-    async function downloadCSV(formId) {
-      const response = await fetch('/api/submissions/get-submissions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ formId, adminEmail })
-      });
-      const data = await response.json();
-      
-      if (data.submissions && data.submissions.length > 0) {
-        let csv = 'Student Email,Submitted At,';
-        const firstResponse = typeof data.submissions[0].ResponseData === 'string' 
-          ? JSON.parse(data.submissions[0].ResponseData) 
-          : data.submissions[0].ResponseData;
-        csv += Object.keys(firstResponse).join(',') + '\n';
-        
-        data.submissions.forEach(sub => {
-          const responses = typeof sub.ResponseData === 'string' ? JSON.parse(sub.ResponseData) : sub.ResponseData;
-          csv += `"${sub.StudentEmail}","${new Date(sub.SubmittedAt).toLocaleString()}",`;
-          csv += Object.values(responses).map(v => `"${Array.isArray(v) ? v.join(';') : v}"`).join(',') + '\n';
-        });
-        
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `form_${formId}_responses.csv`;
-        a.click();
-        window.URL.revokeObjectURL(url);
-      }
-    }
 
     async function deleteForm(formId) {
       if (!confirm('⚠️ Are you sure? This will permanently delete the form and all submissions.')) return;
@@ -677,14 +766,10 @@
       loadForms();
     }
 
-    function closeModal() {
-      document.getElementById('submissionsModal').style.display = 'none';
-    }
-
     function showMessage(elementId, message, type) {
       const msgEl = document.getElementById(elementId);
       msgEl.innerHTML = `<div class="message ${type}">${message}</div>`;
-      setTimeout(() => msgEl.innerHTML = '', 4000);
+      setTimeout(() => msgEl.innerHTML = '', 5000);
     }
 
     loadForms();
