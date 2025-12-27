@@ -5,385 +5,228 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form - Formify</title>
   <style>
+    /* UI FIXES: 
+       - Enabled vertical scrolling by removing overflow:hidden
+       - Changed body centering logic to allow long forms
+       - Set z-index and pointer-events on 3D bg to prevent interaction blocking
+    */
+    :root {
+      --primary: #00d4ff;
+      --primary-dark: #0099cc;
+      --bg-dark: #0a0e27;
+      --border: rgba(0, 212, 255, 0.3);
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
-    @keyframes float3d {
-      0%, 100% { transform: translateY(0px) rotateX(0deg) rotateY(0deg); }
-      50% { transform: translateY(-30px) rotateX(10deg) rotateY(10deg); }
-    }
-
-    @keyframes rotate3d {
-      0% { transform: rotateX(0deg) rotateY(0deg); }
-      100% { transform: rotateX(360deg) rotateY(360deg); }
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 50%, #0f1729 100%);
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: #0a0e27;
       color: #fff;
       min-height: 100vh;
-      padding: 30px 20px;
+      /* FIX: Allow scrolling */
+      overflow-y: auto; 
+      overflow-x: hidden;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      position: relative;
-      overflow: hidden;
-      perspective: 1000px;
+      padding: 60px 20px;
     }
 
-    .bg-3d {
-      position: absolute;
-      width: 100%;
-      height: 100%;
+    /* 3D Background - FIXED LAYER */
+    #bg-canvas {
+      position: fixed;
       top: 0;
       left: 0;
+      width: 100%;
+      height: 100%;
       z-index: 0;
-      overflow: hidden;
+      pointer-events: none; /* FIX: Allows clicking through to form */
+      background: radial-gradient(circle at center, #1a1d3a 0%, #0a0e27 100%);
     }
 
-    .cube {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      transform-style: preserve-3d;
-      animation: rotate3d 20s linear infinite;
-    }
-
-    .cube-face {
-      position: absolute;
-      width: 200px;
-      height: 200px;
-      background: rgba(0, 212, 255, 0.05);
-      border: 2px solid rgba(0, 212, 255, 0.2);
-      backdrop-filter: blur(5px);
-    }
-
-    .cube-face:nth-child(1) { transform: rotateY(0deg) translateZ(100px); }
-    .cube-face:nth-child(2) { transform: rotateY(90deg) translateZ(100px); }
-    .cube-face:nth-child(3) { transform: rotateY(180deg) translateZ(100px); }
-    .cube-face:nth-child(4) { transform: rotateY(-90deg) translateZ(100px); }
-    .cube-face:nth-child(5) { transform: rotateX(90deg) translateZ(100px); }
-    .cube-face:nth-child(6) { transform: rotateX(-90deg) translateZ(100px); }
-
-    #cube1 { top: 10%; left: 10%; animation-duration: 25s; }
-    #cube2 { top: 60%; right: 15%; animation-duration: 30s; animation-direction: reverse; }
-    #cube3 { bottom: 15%; left: 20%; animation-duration: 20s; }
-    
     .container {
       background: rgba(0, 0, 0, 0.4);
       padding: 50px;
-      border-radius: 25px;
+      border-radius: 28px;
       max-width: 800px;
       width: 100%;
-      border: 1px solid rgba(0, 212, 255, 0.3);
+      border: 1px solid var(--border);
       backdrop-filter: blur(20px);
-      box-shadow: 0 15px 60px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
       position: relative;
-      z-index: 1;
-      animation: slideUp 0.8s ease;
+      z-index: 2; /* Ensure form is above background */
+      animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     h1 {
-      background: linear-gradient(135deg, #00d4ff, #00e5ff);
+      background: linear-gradient(135deg, #fff, var(--primary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-size: 2.8em;
+      font-size: 2.5em;
       margin-bottom: 15px;
       text-align: center;
       font-weight: 800;
-      animation: slideUp 1s ease;
     }
     
     .form-description {
       color: #b0b0c0;
       margin-bottom: 40px;
-      font-size: 1.15em;
       text-align: center;
-      animation: slideUp 1.2s ease;
-    }
-    
-    .question-block {
-      margin-bottom: 35px;
-      padding: 28px;
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 16px;
-      border-left: 5px solid #00d4ff;
-      transition: all 0.4s ease;
-      animation: slideUp 0.6s ease;
-      animation-fill-mode: both;
-    }
-
-    .question-block:hover {
-      background: rgba(0, 0, 0, 0.5);
-      transform: translateX(8px);
-      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
-      border-left-width: 8px;
-    }
-    
-    .question-label {
-      font-size: 1.2em;
-      margin-bottom: 18px;
-      color: #fff;
-      font-weight: 600;
-    }
-    
-    .required {
-      color: #f87171;
-      margin-left: 5px;
-      font-weight: bold;
       font-size: 1.1em;
     }
     
-    input[type="text"],
-    input[type="email"],
-    input[type="number"],
-    input[type="date"],
-    textarea,
-    select {
-      width: 100%;
-      padding: 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      color: #fff;
-      font-size: 1.05em;
+    .question-block {
+      margin-bottom: 30px;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 18px;
+      border-left: 4px solid var(--primary);
       transition: all 0.3s ease;
-      font-family: inherit;
-    }
-    
-    input:focus,
-    textarea:focus,
-    select:focus {
-      outline: none;
-      border-color: #00d4ff;
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateY(-2px);
     }
 
-    select {
-      color-scheme: dark;
-    }
-
-    select option {
-      background: #0a0e27 !important;
-      color: #ffffff !important;
-      padding: 10px !important;
-    }
-    
-    textarea {
-      min-height: 130px;
-      resize: vertical;
-    }
-    
-    .checkbox-group,
-    .radio-group {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    
-    .option-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 15px;
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid transparent;
-    }
-    
-    .option-item:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(0, 212, 255, 0.4);
+    .question-block:hover {
+      background: rgba(255, 255, 255, 0.06);
       transform: translateX(5px);
     }
     
-    .option-item input[type="radio"],
-    .option-item input[type="checkbox"] {
-      width: auto;
-      cursor: pointer;
-      margin: 0;
-      transform: scale(1.3);
+    .question-label {
+      font-size: 1.15em;
+      margin-bottom: 15px;
+      font-weight: 600;
     }
     
-    .option-item label {
+    .required { color: #f87171; margin-left: 4px; }
+    
+    input[type="text"], input[type="email"], input[type="number"], input[type="date"], textarea, select {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 1em;
+      transition: all 0.2s ease;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      margin-bottom: 10px;
       cursor: pointer;
-      flex: 1;
-      font-size: 1.05em;
+      border: 1px solid transparent;
+      transition: 0.2s;
+    }
+    
+    .option-item:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(0, 212, 255, 0.2);
     }
     
     .submit-btn {
-      background: linear-gradient(135deg, #00d4ff, #0099cc);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: #0a0e27;
       border: none;
-      padding: 20px 60px;
-      font-size: 1.25em;
-      font-weight: 700;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      box-shadow: 0 8px 30px rgba(0, 212, 255, 0.5);
-      width: 100%;
-      margin-top: 30px;
-      letter-spacing: 1px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .submit-btn::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-
-    .submit-btn:hover::before {
-      width: 500px;
-      height: 500px;
-    }
-    
-    .submit-btn:hover {
-      transform: translateY(-5px) scale(1.02);
-      box-shadow: 0 15px 50px rgba(0, 212, 255, 0.7);
-      background: linear-gradient(135deg, #00e5ff, #00b8e6);
-    }
-
-    .submit-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-    
-    .error-message {
-      background: rgba(239, 68, 68, 0.2);
-      color: #f87171;
-      padding: 30px;
-      border-radius: 16px;
-      text-align: center;
-      font-size: 1.25em;
-      border: 2px solid #f87171;
-      animation: slideUp 0.5s ease;
-    }
-    
-    .success-message {
-      background: rgba(34, 197, 94, 0.2);
-      color: #4ade80;
-      padding: 30px;
-      border-radius: 16px;
-      text-align: center;
-      font-size: 1.25em;
-      border: 2px solid #4ade80;
-      animation: slideUp 0.5s ease;
-    }
-    
-    .loading {
-      text-align: center;
-      font-size: 1.5em;
-      color: #00d4ff;
-    }
-
-    .login-prompt {
-      text-align: center;
-      animation: slideUp 0.6s ease;
-    }
-
-    .login-btn {
-      background: linear-gradient(135deg, #00d4ff, #0099cc);
-      color: #0a0e27;
-      border: none;
-      padding: 18px 55px;
+      padding: 18px;
       font-size: 1.2em;
       font-weight: 700;
-      border-radius: 50px;
+      border-radius: 14px;
       cursor: pointer;
-      transition: all 0.4s ease;
-      box-shadow: 0 8px 30px rgba(0, 212, 255, 0.5);
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 25px;
+      width: 100%;
+      margin-top: 20px;
+      transition: all 0.3s ease;
     }
 
-    .login-btn:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 45px rgba(0, 212, 255, 0.7);
-      background: linear-gradient(135deg, #00e5ff, #00b8e6);
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
     }
 
     .spinner {
-      border: 4px solid rgba(255, 255, 255, 0.1);
-      border-top: 4px solid #00d4ff;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top: 3px solid var(--primary);
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       animation: spin 1s linear infinite;
-      margin: 25px auto;
+      margin: 20px auto;
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     @media (max-width: 768px) {
-      .container { padding: 30px 25px; }
-      h1 { font-size: 2.2em; }
-      .question-label { font-size: 1.05em; }
-      .cube { display: none; }
+      .container { padding: 30px 20px; }
+      h1 { font-size: 2em; }
     }
   </style>
 </head>
 <body>
-  <div class="bg-3d">
-    <div class="cube" id="cube1">
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-    </div>
-    <div class="cube" id="cube2">
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-    </div>
-    <div class="cube" id="cube3">
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-      <div class="cube-face"></div>
-    </div>
-  </div>
+
+  <canvas id="bg-canvas"></canvas>
 
   <div class="container">
     <div id="content">
       <div class="loading">
         <div class="spinner"></div>
-        Loading form...
+        <p style="text-align: center; color: #b0b0c0;">Initialising form securely...</p>
       </div>
     </div>
   </div>
 
   <script>
+    /* --- 3D AMBIENT BACKGROUND --- */
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    for(let i=0; i<150; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2,
+        speed: Math.random() * 0.5 + 0.2
+      });
+    }
+
+    function animate() {
+      ctx.fillStyle = '#0a0e27';
+      ctx.fillRect(0,0, canvas.width, canvas.height);
+      ctx.fillStyle = '#00d4ff';
+      stars.forEach(s => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+        ctx.fill();
+        s.y -= s.speed;
+        if(s.y < 0) s.y = canvas.height;
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    /* --- ORIGINAL LOGIC (UNTOUCHED) --- */
     const urlParams = new URLSearchParams(window.location.search);
     const formId = urlParams.get('id');
     const studentEmail = urlParams.get('email');
@@ -444,7 +287,9 @@
         <div class="login-prompt">
           <h1>Authentication Required</h1>
           <p class="form-description">Please sign in with Google to access this form</p>
-          <a href="/auth/google?formId=${formId}" class="login-btn">Sign in with Google</a>
+          <div style="text-align: center;">
+            <a href="/auth/google?formId=${formId}" class="submit-btn" style="text-decoration: none; display: inline-block;">Sign in with Google</a>
+          </div>
         </div>
       `;
     }
@@ -454,12 +299,12 @@
       
       let formHTML = `
         <h1>${formData.FormTitle}</h1>
-        <p class="form-description">Signed in as: <strong style="color: #00d4ff;">${studentEmail}</strong></p>
+        <p class="form-description">Submitting as: <strong style="color: var(--primary);">${studentEmail}</strong></p>
         <form id="responseForm" onsubmit="submitForm(event)">
       `;
 
       structure.forEach((question, index) => {
-        formHTML += `<div class="question-block" style="animation-delay: ${index * 0.1}s">`;
+        formHTML += `<div class="question-block" style="animation: slideUp 0.5s ease forwards ${index * 0.1}s; opacity: 0;">`;
         formHTML += `<div class="question-label">${index + 1}. ${question.label}`;
         if (question.required) {
           formHTML += `<span class="required">*</span>`;
@@ -574,13 +419,17 @@
 
     function showError(message) {
       document.getElementById('content').innerHTML = `
-        <div class="error-message">⚠️ ${message}</div>
+        <div style="background: rgba(239, 68, 68, 0.2); color: #f87171; padding: 30px; border-radius: 16px; text-align: center; border: 2px solid #f87171;">
+          ⚠️ ${message}
+        </div>
       `;
     }
 
     function showSuccess(message) {
       document.getElementById('content').innerHTML = `
-        <div class="success-message">${message}</div>
+        <div style="background: rgba(34, 197, 94, 0.2); color: #4ade80; padding: 30px; border-radius: 16px; text-align: center; border: 2px solid #4ade80;">
+          ${message}
+        </div>
       `;
     }
 
