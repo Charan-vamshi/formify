@@ -5,155 +5,343 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Owner Dashboard - Formify</title>
   <style>
+    /* THEME: Midnight Command Center
+       STYLE: High-Security Glassmorphism
+       LOGIC: Preserved Intact
+    */
+    :root {
+      --cyan: #00d4ff;
+      --cyan-dim: rgba(0, 212, 255, 0.1);
+      --obsidian: #050505;
+      --navy: #0a0e27;
+      --glass: rgba(10, 14, 39, 0.6);
+      --border: rgba(0, 212, 255, 0.2);
+      --danger: #ef4444;
+      --success: #10b981;
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 100%);
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background-color: var(--obsidian);
       color: #fff;
       min-height: 100vh;
-      padding: 20px;
+      overflow-x: hidden;
     }
-    
+
+    /* 3D Neural Background */
+    #neural-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at 50% 50%, #1a1d3a 0%, #000 100%);
+    }
+
+    .dashboard-container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header Panel */
     .header {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 25px;
-      border-radius: 12px;
-      margin-bottom: 30px;
-      border: 1px solid rgba(0, 212, 255, 0.2);
-      backdrop-filter: blur(10px);
+      background: var(--glass);
+      padding: 35px;
+      border-radius: 24px;
+      margin-bottom: 40px;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 40px rgba(0, 212, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 4px; height: 100%;
+      background: var(--cyan);
+      box-shadow: 0 0 15px var(--cyan);
     }
     
     h1 {
-      color: #00d4ff;
-      font-size: 2.5em;
-      margin-bottom: 5px;
+      color: #fff;
+      font-size: 2.8em;
+      font-weight: 800;
+      margin-bottom: 10px;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+    }
+
+    .badge-owner {
+      background: rgba(0, 212, 255, 0.15);
+      color: var(--cyan);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      border: 1px solid var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 700;
     }
     
+    /* Content Sections */
     .section {
-      background: rgba(255, 255, 255, 0.03);
-      padding: 30px;
-      border-radius: 12px;
-      margin-bottom: 25px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(0, 0, 0, 0.4);
+      padding: 40px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(15px);
+      transition: transform 0.3s ease;
+    }
+
+    .section:hover {
+      border-color: var(--border);
     }
     
     h2 {
-      color: #00d4ff;
-      margin-bottom: 20px;
-      font-size: 1.8em;
+      color: var(--cyan);
+      margin-bottom: 25px;
+      font-size: 1.5em;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    h2::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
     }
     
+    /* Inputs */
     input {
       width: 100%;
-      padding: 14px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
+      padding: 18px 24px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
       color: #fff;
-      font-size: 1em;
-      margin-bottom: 15px;
-      transition: all 0.3s;
+      font-size: 1.1em;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+      font-family: monospace;
     }
     
     input:focus {
       outline: none;
-      border-color: #00d4ff;
-      box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--cyan);
+      box-shadow: 0 0 25px var(--cyan-dim);
+      background: rgba(0, 0, 0, 0.6);
     }
     
+    /* Buttons */
     button {
-      background: linear-gradient(135deg, #00d4ff, #0099cc);
-      color: #0a0e27;
+      background: linear-gradient(135deg, var(--cyan), #0099cc);
+      color: #000;
       border: none;
-      padding: 12px 30px;
+      padding: 16px 32px;
       font-size: 1em;
-      font-weight: 600;
-      border-radius: 8px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: all 0.3s;
-      box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 20px rgba(0, 212, 255, 0.2);
     }
     
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 212, 255, 0.5);
+      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+      filter: brightness(1.1);
     }
     
+    /* Admin List Grid */
     .admin-list {
       display: grid;
-      gap: 15px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 25px;
     }
     
     .admin-card {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 20px;
-      border-radius: 10px;
-      border-left: 4px solid #00d4ff;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+      padding: 25px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: all 0.3s;
+      flex-direction: column;
+      gap: 15px;
+      transition: all 0.3s ease;
+      position: relative;
     }
 
     .admin-card:hover {
-      background: rgba(255, 255, 255, 0.08);
-      transform: translateX(5px);
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--cyan);
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
     
     .admin-email {
-      font-size: 1.2em;
-      color: #00d4ff;
-      margin-bottom: 5px;
+      font-size: 1.1em;
+      color: #fff;
+      font-weight: 500;
+      word-break: break-all;
     }
     
     .admin-stats {
-      color: #b0b0c0;
-      font-size: 0.9em;
+      color: #64748b;
+      font-size: 0.85em;
+      font-family: monospace;
+      text-transform: uppercase;
     }
 
     .remove-btn {
-      background: linear-gradient(135deg, #dc2626, #991b1b);
-      color: white;
-      padding: 10px 20px;
-      font-size: 0.9em;
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      padding: 10px;
+      font-size: 0.85em;
+      margin-top: auto;
+      box-shadow: none;
     }
 
     .remove-btn:hover {
-      background: linear-gradient(135deg, #ef4444, #dc2626);
+      background: var(--danger);
+      color: #fff;
+      box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
     }
     
+    /* Messages */
     .message {
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 15px;
-      font-weight: 500;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 20px;
+      font-weight: 600;
+      text-align: center;
+      animation: slideIn 0.3s ease;
     }
     
-    .success { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid #4ade80; }
-    .error { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid #f87171; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .success { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid var(--success); }
+    .error { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid var(--danger); }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>Owner Dashboard</h1>
-    <p style="font-size: 1.1em; color: #b0b0c0;">Welcome, <span id="ownerEmail" style="color: #00d4ff;"></span></p>
-  </div>
+  <canvas id="neural-canvas"></canvas>
 
-  <div class="section">
-    <h2>Add New Admin</h2>
-    <input type="email" id="newAdminEmail" placeholder="Enter admin Gmail address">
-    <button onclick="addAdmin()">Add Admin</button>
-    <div id="addMessage"></div>
-  </div>
+  <div class="dashboard-container">
+    <div class="header">
+      <div>
+        <h1>SYSTEM OVERLORD</h1>
+        <p style="font-size: 1.1em; color: #94a3b8; display: flex; align-items: center; gap: 10px;">
+          AUTHENTICATED USER: 
+          <span class="badge-owner" id="ownerEmail"></span>
+        </p>
+      </div>
+    </div>
 
-  <div class="section">
-    <h2>All Admins</h2>
-    <div class="admin-list" id="adminList">Loading...</div>
+    <div class="section">
+      <h2>Authorize New Administrator</h2>
+      <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+        <input type="email" id="newAdminEmail" placeholder="root@admin.com" style="flex: 1; margin-bottom: 0;">
+        <button onclick="addAdmin()">Grant Access</button>
+      </div>
+      <div id="addMessage"></div>
+    </div>
+
+    <div class="section">
+      <h2>Active Personnel Registry</h2>
+      <div class="admin-list" id="adminList">
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">
+          Initialising database connection...
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
+    /* --- 3D NEURAL NETWORK VISUALS --- */
+    const canvas = document.getElementById('neural-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let nodes = [];
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+      initNodes();
+    }
+
+    class Node {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.8;
+        this.vy = (Math.random() - 0.5) * 0.8;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if(this.x < 0 || this.x > width) this.vx *= -1;
+        if(this.y < 0 || this.y > height) this.vy *= -1;
+      }
+    }
+
+    function initNodes() {
+      nodes = [];
+      const count = Math.floor((width * height) / 12000);
+      for(let i=0; i<count; i++) nodes.push(new Node());
+    }
+
+    function animate() {
+      ctx.fillStyle = '#050505';
+      ctx.fillRect(0, 0, width, height);
+      
+      ctx.fillStyle = '#00d4ff';
+      nodes.forEach(node => {
+        node.update();
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 2, 0, Math.PI*2);
+        ctx.fill();
+
+        nodes.forEach(other => {
+          const dx = node.x - other.x;
+          const dy = node.y - other.y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if(dist < 120) {
+            ctx.strokeStyle = `rgba(0, 212, 255, ${0.15 * (1 - dist/120)})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(node.x, node.y);
+            ctx.lineTo(other.x, other.y);
+            ctx.stroke();
+          }
+        });
+      });
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    animate();
+
+    /* --- ORIGINAL OWNER LOGIC (UNTOUCHED) --- */
     const urlParams = new URLSearchParams(window.location.search);
     const ownerEmail = urlParams.get('email');
     document.getElementById('ownerEmail').textContent = ownerEmail;
@@ -196,18 +384,18 @@
           <div class="admin-card">
             <div>
               <div class="admin-email">${admin.Email}</div>
-              <div class="admin-stats">Added: ${new Date(admin.CreatedAt).toLocaleDateString()}</div>
+              <div class="admin-stats">Authorized: ${new Date(admin.CreatedAt).toLocaleDateString()}</div>
             </div>
-            <button class="remove-btn" onclick="removeAdmin('${admin.Email}')">Remove Admin</button>
+            <button class="remove-btn" onclick="removeAdmin('${admin.Email}')">REVOKE ACCESS</button>
           </div>
         `).join('');
       } else {
-        adminList.innerHTML = '<p style="color: #b0b0c0;">No admins added yet.</p>';
+        adminList.innerHTML = '<p style="color: #64748b; grid-column: 1/-1; text-align: center;">No active administrators found in registry.</p>';
       }
     }
 
     async function removeAdmin(adminEmail) {
-      if (!confirm(`Remove ${adminEmail} from admin access?`)) return;
+      if (!confirm(`WARNING: Revoke access for ${adminEmail}? This cannot be undone.`)) return;
       
       const response = await fetch('/api/admin/remove-admin', {
         method: 'POST',
