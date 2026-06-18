@@ -7,7 +7,7 @@ dotenv.config();
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "https://formify-production.up.railway.app/auth/google/callback"
+    callbackURL: "https://formify-y9mb.onrender.com/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, cb) {
     return cb(null, profile);
