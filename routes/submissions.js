@@ -41,6 +41,19 @@ router.post('/submit', async (req, res) => {
   }
 });
 
+router.post('/check-submitted', async (req, res) => {
+  try {
+    const { formId, studentEmail } = req.body;
+    const { rows } = await pool.query(
+      'SELECT * FROM Submissions WHERE FormID = $1 AND StudentEmail = $2',
+      [formId, studentEmail]
+    );
+    res.json({ submitted: rows.length > 0 });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 router.post('/get-submissions', async (req, res) => {
   try {
     const { formId, adminEmail } = req.body;

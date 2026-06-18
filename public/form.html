@@ -5,11 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form - Formify</title>
   <style>
-    /* UI FIXES: 
-       - Enabled vertical scrolling by removing overflow:hidden
-       - Changed body centering logic to allow long forms
-       - Set z-index and pointer-events on 3D bg to prevent interaction blocking
-    */
     :root {
       --primary: #00d4ff;
       --primary-dark: #0099cc;
@@ -24,7 +19,6 @@
       background: #0a0e27;
       color: #fff;
       min-height: 100vh;
-      /* FIX: Allow scrolling */
       overflow-y: auto; 
       overflow-x: hidden;
       display: flex;
@@ -33,7 +27,6 @@
       padding: 60px 20px;
     }
 
-    /* 3D Background - FIXED LAYER */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -41,7 +34,7 @@
       width: 100%;
       height: 100%;
       z-index: 0;
-      pointer-events: none; /* FIX: Allows clicking through to form */
+      pointer-events: none;
       background: radial-gradient(circle at center, #1a1d3a 0%, #0a0e27 100%);
     }
 
@@ -55,7 +48,7 @@
       backdrop-filter: blur(20px);
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
       position: relative;
-      z-index: 2; /* Ensure form is above background */
+      z-index: 2;
       animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
@@ -190,7 +183,6 @@
   </div>
 
   <script>
-    /* --- 3D AMBIENT BACKGROUND --- */
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let stars = [];
@@ -226,7 +218,6 @@
     }
     animate();
 
-    /* --- ORIGINAL LOGIC (UNTOUCHED) --- */
     const urlParams = new URLSearchParams(window.location.search);
     const formId = urlParams.get('id');
     const studentEmail = urlParams.get('email');
@@ -244,6 +235,7 @@
       }
 
       try {
+        // Check whitelist
         const whitelistRes = await fetch('/api/whitelist/check', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -257,6 +249,21 @@
           return;
         }
 
+        // Check if already submitted
+        const submissionCheckRes = await fetch('/api/submissions/check-submitted', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ formId, studentEmail })
+        });
+
+        const submissionCheckData = await submissionCheckRes.json();
+
+        if (submissionCheckData.submitted) {
+          showError('✅ You have already submitted this form.');
+          return;
+        }
+
+        // Load form
         const formRes = await fetch('/api/forms/get-form', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
