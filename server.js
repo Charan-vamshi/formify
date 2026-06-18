@@ -51,7 +51,7 @@ app.get('/auth/google/callback',
       return res.send('<script>alert("Access denied. Contact owner."); window.location.href="/";</script>');
     }
     
-    if (rows[0].Role === 'Owner') {
+    if (rows[0].role === 'Owner') {
       res.redirect('https://formify-y9mb.onrender.com/owner.html?email=' + email);
     } else {
       res.redirect('https://formify-y9mb.onrender.com/admin.html?email=' + email);
