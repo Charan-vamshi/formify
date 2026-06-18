@@ -14,6 +14,22 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+
+// Protect owner and admin pages
+app.get('/owner.html', (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/');
+  }
+  next();
+});
+
+app.get('/admin.html', (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    return res.redirect('/');
+  }
+  next();
+});
+
 app.use(express.static('public'));
 
 app.use(session({
@@ -27,7 +43,7 @@ app.use(passport.session());
 
 app.get('/auth/google',
   (req, res, next) => {
-    const formId = req.query.formid;
+    const formId = req.query.formId;
     passport.authenticate('google', { 
       scope: ['profile', 'email'],
       state: formId
