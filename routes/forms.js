@@ -14,7 +14,7 @@ router.post('/create', async (req, res) => {
 
     const { rows: result } = await pool.query(
       'INSERT INTO Forms (AdminID, FormTitle, FormStructure, RequireWhitelist) VALUES ($1, $2, $3, $4) RETURNING FormID',
-      [admin[0].UserID, formTitle, JSON.stringify(formStructure), requireWhitelist !== false]
+      [admin[0].userid, formTitle, JSON.stringify(formStructure), requireWhitelist !== false]
     );
 
     res.json({ message: 'Form created', formId: result[0].formid });

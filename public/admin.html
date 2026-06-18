@@ -635,7 +635,7 @@
             await fetch('/api/whitelist/upload', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ formId: formData.formId, emails })
+              body: JSON.stringify({ formId: formData.formid, emails })
             });
           };
           reader.readAsText(whitelistFile);
@@ -650,7 +650,7 @@
             await fetch('/api/whitelist/upload-blacklist', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ formId: formData.formId, emails })
+              body: JSON.stringify({ formId: formData.formid, emails })
             });
           };
           blackReader.readAsText(blacklistFile);
@@ -689,7 +689,7 @@
             const countRes = await fetch('/api/submissions/get-count', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ formId: form.FormID, adminEmail })
+              body: JSON.stringify({ formId: form.formid, adminEmail })
             });
             const countData = await countRes.json();
             form.responseCount = countData.count || 0;
@@ -702,19 +702,19 @@
         formList.innerHTML = formsWithCounts.map(form => `
           <div class="form-card">
             <div>
-              <div class="form-title">${form.FormTitle}</div>
+              <div class="form-title">${form.formtitle}</div>
               <div class="form-status">
-                <span>Status: <strong>${form.IsLive ? '🟢 Live' : '🟡 Draft'}</strong></span>
-                <span>Access: <strong>${form.RequireWhitelist ? '🔒 Whitelist' : '🌐 Public'}</strong></span>
+                <span>Status: <strong>${form.islive ? '🟢 Live' : '🟡 Draft'}</strong></span>
+                <span>Access: <strong>${form.requirewhitelist ? '🔒 Whitelist' : '🌐 Public'}</strong></span>
                 <span>Responses: <strong>${form.responseCount}</strong></span>
-                <span>Created: <strong>${new Date(form.CreatedAt).toLocaleDateString()}</strong></span>
+                <span>Created: <strong>${new Date(form.createdat).toLocaleDateString()}</strong></span>
               </div>
             </div>
             <div class="form-actions">
-              ${!form.IsLive ? `<button onclick="goLive(${form.FormID})">Go Live</button>` : ''}
-              <button onclick="copyFormLink(${form.FormID})">Copy Link</button>
-              <button onclick="viewSubmissions(${form.FormID})">View Submissions</button>
-              <button onclick="deleteForm(${form.FormID})" class="delete-question">Delete</button>
+              ${!form.islive ? `<button onclick="goLive(${form.formid})">Go Live</button>` : ''}
+              <button onclick="copyFormLink(${form.formid})">Copy Link</button>
+              <button onclick="viewSubmissions(${form.formid})">View Submissions</button>
+              <button onclick="deleteForm(${form.formid})" class="delete-question">Delete</button>
             </div>
           </div>
         `).join('');
@@ -724,7 +724,7 @@
     }
 
     function copyFormLink(formId) {
-      const link = `https://formify-production.up.railway.app/form.html?id=${formId}`;
+      const link = `https://formify-y9mb.onrender.com/form.html?id=${formId}`;
       navigator.clipboard.writeText(link);
       alert('✅ Form link copied to clipboard!');
     }

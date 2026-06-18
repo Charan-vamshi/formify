@@ -27,7 +27,7 @@ app.use(passport.session());
 
 app.get('/auth/google',
   (req, res, next) => {
-    const formId = req.query.formId;
+    const formId = req.query.formid;
     passport.authenticate('google', { 
       scope: ['profile', 'email'],
       state: formId

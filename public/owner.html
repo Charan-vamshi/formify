@@ -383,10 +383,10 @@
         adminList.innerHTML = data.admins.map(admin => `
           <div class="admin-card">
             <div>
-              <div class="admin-email">${admin.Email}</div>
-              <div class="admin-stats">Authorized: ${new Date(admin.CreatedAt).toLocaleDateString()}</div>
+              <div class="admin-email">${admin.email}</div>
+              <div class="admin-stats">Authorized: ${new Date(admin.createdat).toLocaleDateString()}</div>
             </div>
-            <button class="remove-btn" onclick="removeAdmin('${admin.Email}')">REVOKE ACCESS</button>
+            <button class="remove-btn" onclick="removeAdmin('${admin.email}')">REVOKE ACCESS</button>
           </div>
         `).join('');
       } else {

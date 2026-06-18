@@ -370,7 +370,7 @@
           body: JSON.stringify({ formId })
         });
         const formData = await formRes.json();
-        document.getElementById('formTitle').textContent = formData.FormTitle;
+        document.getElementById('formTitle').textContent = formData.formtitle;
         formStructure = typeof formData.FormStructure === 'string' ? JSON.parse(formData.FormStructure) : formData.FormStructure;
 
         const response = await fetch('/api/submissions/get-submissions', {
@@ -383,8 +383,8 @@
         if (data.submissions && data.submissions.length > 0) {
           allSubmissions = data.submissions.map(sub => ({
             ...sub,
-            ResponseData: typeof sub.ResponseData === 'string' ? JSON.parse(sub.ResponseData) : sub.ResponseData,
-            SubmittedAt: new Date(sub.SubmittedAt)
+            ResponseData: typeof sub.responsedata === 'string' ? JSON.parse(sub.responsedata) : sub.responsedata,
+            SubmittedAt: new Date(sub.submittedat)
           }));
           filteredSubmissions = [...allSubmissions];
           renderTable();
@@ -404,18 +404,18 @@
       const sortBy = document.getElementById('sortBy').value;
 
       filteredSubmissions = allSubmissions.filter(sub => {
-        if (searchEmail && !sub.StudentEmail.toLowerCase().includes(searchEmail)) return false;
-        if (dateFrom && sub.SubmittedAt < dateFrom) return false;
-        if (dateTo && sub.SubmittedAt > dateTo) return false;
+        if (searchEmail && !sub.studentemail.toLowerCase().includes(searchEmail)) return false;
+        if (dateFrom && sub.submittedat < dateFrom) return false;
+        if (dateTo && sub.submittedat > dateTo) return false;
         return true;
       });
 
       filteredSubmissions.sort((a, b) => {
         switch(sortBy) {
-          case 'newest': return b.SubmittedAt - a.SubmittedAt;
-          case 'oldest': return a.SubmittedAt - b.SubmittedAt;
-          case 'email-asc': return a.StudentEmail.localeCompare(b.StudentEmail);
-          case 'email-desc': return b.StudentEmail.localeCompare(a.StudentEmail);
+          case 'newest': return b.submittedat - a.submittedat;
+          case 'oldest': return a.submittedat - b.submittedat;
+          case 'email-asc': return a.studentemail.localeCompare(b.studentemail);
+          case 'email-desc': return b.studentemail.localeCompare(a.studentemail);
         }
       });
 
@@ -450,11 +450,11 @@
 
       filteredSubmissions.forEach((sub, index) => {
         html += `<tr><td><strong>${index + 1}</strong></td>`;
-        html += `<td><strong style="color: #00d4ff;">${sub.StudentEmail}</strong></td>`;
-        html += `<td>${sub.SubmittedAt.toLocaleString()}</td>`;
+        html += `<td><strong style="color: #00d4ff;">${sub.studentemail}</strong></td>`;
+        html += `<td>${sub.submittedat.toLocaleString()}</td>`;
         
         formStructure.forEach(q => {
-          const answer = sub.ResponseData[q.id];
+          const answer = sub.responsedata[q.id];
           html += `<td>${Array.isArray(answer) ? answer.join(', ') : answer || '-'}</td>`;
         });
         
@@ -468,7 +468,7 @@
     function updateStats() {
       const total = allSubmissions.length;
       const filtered = filteredSubmissions.length;
-      const uniqueStudents = new Set(filteredSubmissions.map(s => s.StudentEmail)).size;
+      const uniqueStudents = new Set(filteredSubmissions.map(s => s.studentemail)).size;
 
       document.getElementById('statsContainer').innerHTML = `
         <div class="stat-card">
@@ -496,9 +496,9 @@
       csv += formStructure.map(q => q.label).join(',') + '\n';
       
       filteredSubmissions.forEach(sub => {
-        csv += `"${sub.StudentEmail}","${sub.SubmittedAt.toLocaleString()}",`;
+        csv += `"${sub.studentemail}","${sub.submittedat.toLocaleString()}",`;
         csv += formStructure.map(q => {
-          const answer = sub.ResponseData[q.id];
+          const answer = sub.responsedata[q.id];
           return `"${Array.isArray(answer) ? answer.join(';') : answer || ''}"`;
         }).join(',') + '\n';
       });

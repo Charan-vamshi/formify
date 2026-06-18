@@ -270,7 +270,7 @@
           return;
         }
 
-        if (!form.IsLive) {
+        if (!form.islive) {
           showError('This form is not live yet.');
           return;
         }
@@ -298,7 +298,7 @@
       const structure = typeof formData.FormStructure === 'string' ? JSON.parse(formData.FormStructure) : formData.FormStructure;
       
       let formHTML = `
-        <h1>${formData.FormTitle}</h1>
+        <h1>${formData.formtitle}</h1>
         <p class="form-description">Submitting as: <strong style="color: var(--primary);">${studentEmail}</strong></p>
         <form id="responseForm" onsubmit="submitForm(event)">
       `;
