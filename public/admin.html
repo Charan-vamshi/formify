@@ -635,7 +635,7 @@
             await fetch('/api/whitelist/upload', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ formId: formData.formid, emails })
+              body: JSON.stringify({ formId: formData.formId, emails })
             });
           };
           reader.readAsText(whitelistFile);
@@ -650,7 +650,7 @@
             await fetch('/api/whitelist/upload-blacklist', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ formId: formData.formid, emails })
+              body: JSON.stringify({ formId: formData.formId, emails })
             });
           };
           blackReader.readAsText(blacklistFile);
