@@ -5,12 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Form Responses - Formify</title>
   <style>
-    /* UI/UX ENHANCEMENTS: 
-       - Interactive 3D Canvas Background
-       - Precision Data Grid Styling
-       - Enhanced Glassmorphism & Scannability
-       - Senior Logic Integrity (Untouched)
-    */
     :root {
       --primary: #00d4ff;
       --primary-glow: rgba(0, 212, 255, 0.4);
@@ -31,7 +25,6 @@
       overflow-x: hidden;
     }
 
-    /* 3D Interactive Background */
     #bg-canvas {
       position: fixed;
       top: 0; left: 0;
@@ -47,7 +40,6 @@
       z-index: 1;
     }
 
-    /* Header Section */
     .header {
       background: var(--card-bg);
       padding: 30px 40px;
@@ -70,7 +62,6 @@
       letter-spacing: -1px;
     }
 
-    /* Stats Cards */
     .stats {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -108,7 +99,6 @@
       margin-top: 8px;
     }
 
-    /* Filters Section */
     .filters {
       background: var(--card-bg);
       padding: 30px;
@@ -181,7 +171,6 @@
       border: 1px solid var(--border);
     }
 
-    /* Table Design */
     .table-container {
       background: var(--card-bg);
       border-radius: 24px;
@@ -290,7 +279,6 @@
   </div>
 
   <script>
-    /* --- 3D INTERACTIVE DATA-FLOW LOGIC --- */
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let nodes = [];
@@ -303,9 +291,7 @@
     resize();
 
     class DataNode {
-      constructor() {
-        this.init();
-      }
+      constructor() { this.init(); }
       init() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
@@ -326,14 +312,12 @@
     function draw() {
       ctx.fillStyle = 'rgba(10, 14, 39, 0.2)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
       nodes.forEach((node, i) => {
         node.update();
         ctx.fillStyle = 'rgba(0, 212, 255, 0.4)';
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
         ctx.fill();
-
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = node.x - nodes[j].x;
           const dy = node.y - nodes[j].y;
@@ -351,7 +335,6 @@
     }
     draw();
 
-    /* --- ORIGINAL LOGIC (UNTOUCHED) --- */
     const urlParams = new URLSearchParams(window.location.search);
     const formId = urlParams.get('formId');
     const adminEmail = urlParams.get('adminEmail');
@@ -371,7 +354,7 @@
         });
         const formData = await formRes.json();
         document.getElementById('formTitle').textContent = formData.formtitle;
-        formStructure = typeof formData.FormStructure === 'string' ? JSON.parse(formData.FormStructure) : formData.FormStructure;
+        formStructure = typeof formData.formstructure === 'string' ? JSON.parse(formData.formstructure) : formData.formstructure;
 
         const response = await fetch('/api/submissions/get-submissions', {
           method: 'POST',
@@ -383,8 +366,8 @@
         if (data.submissions && data.submissions.length > 0) {
           allSubmissions = data.submissions.map(sub => ({
             ...sub,
-            ResponseData: typeof sub.responsedata === 'string' ? JSON.parse(sub.responsedata) : sub.responsedata,
-            SubmittedAt: new Date(sub.submittedat)
+            responsedata: typeof sub.responsedata === 'string' ? JSON.parse(sub.responsedata) : sub.responsedata,
+            submittedat: new Date(sub.submittedat)
           }));
           filteredSubmissions = [...allSubmissions];
           renderTable();
