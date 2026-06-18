@@ -15,6 +15,15 @@ const app = express();
 
 app.use(express.json());
 
+app.use(session({
+  secret: 'formify-secret-key',
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Protect owner and admin pages
 app.get('/owner.html', (req, res, next) => {
   if (!req.isAuthenticated()) {
@@ -31,15 +40,6 @@ app.get('/admin.html', (req, res, next) => {
 });
 
 app.use(express.static('public'));
-
-app.use(session({
-  secret: 'formify-secret-key',
-  resave: false,
-  saveUninitialized: false
-}));
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.get('/auth/google',
   (req, res, next) => {
