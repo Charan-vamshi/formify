@@ -25,7 +25,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Google OAuth routes
 app.get('/auth/google',
   (req, res, next) => {
     const formId = req.query.formId;
@@ -42,19 +41,16 @@ app.get('/auth/google/callback',
     const email = req.user.emails[0].value;
     const formId = req.query.state;
     
-    // If accessing a student form
     if (formId) {
       return res.redirect(`https://formify-y9mb.onrender.com/form.html?id=${formId}&email=${email}`);
     }
     
-    // Check if user exists for admin/owner login
-    const [rows] = await pool.query('SELECT * FROM Users WHERE Email = ?', [email]);
+    const { rows } = await pool.query('SELECT * FROM Users WHERE Email = $1', [email]);
     
     if (rows.length === 0) {
       return res.send('<script>alert("Access denied. Contact owner."); window.location.href="/";</script>');
     }
     
-    // Redirect based on role
     if (rows[0].Role === 'Owner') {
       res.redirect('https://formify-y9mb.onrender.com/owner.html?email=' + email);
     } else {
