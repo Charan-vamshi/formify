@@ -295,7 +295,7 @@
     }
 
     function renderForm() {
-      const structure = typeof formData.FormStructure === 'string' ? JSON.parse(formData.FormStructure) : formData.FormStructure;
+      const structure = typeof formData.Formstructure === 'string' ? JSON.parse(formData.FormStructure) : formData.FormStructure;
       
       let formHTML = `
         <h1>${formData.formtitle}</h1>
@@ -379,7 +379,7 @@
       
       const formElement = document.getElementById('responseForm');
       const formDataObj = new FormData(formElement);
-      const structure = typeof formData.FormStructure === 'string' ? JSON.parse(formData.FormStructure) : formData.FormStructure;
+      const structure = typeof formData.Formstructure === 'string' ? JSON.parse(formData.FormStructure) : formData.FormStructure;
       
       const responseData = {};
       
