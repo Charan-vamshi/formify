@@ -27,7 +27,8 @@
       color: #fff;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       line-height: 1.5;
     }
 
@@ -185,8 +186,8 @@
 
     /* Footer Stats */
     .footer-text {
-      position: absolute;
-      bottom: 40px;
+      position: relative;
+      padding-bottom: 40px;
       width: 100%;
       display: flex;
       justify-content: center;
@@ -221,7 +222,7 @@
 
     @media (max-width: 768px) {
       h1 { font-size: 4em; }
-      .footer-text { flex-direction: column; align-items: center; gap: 10px; bottom: 20px; }
+      .footer-text { flex-direction: column; align-items: center; gap: 10px; padding-bottom: 20px; }
       .department-info { padding: 20px; margin: 20px; }
     }
   </style>
