@@ -27,19 +27,12 @@
 
     body {
       font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-      background-color: var(--bg-color);
+      background-color: #09090b;
+      
+      background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 119, 198, 0.15), transparent);
       color: var(--text-main);
       min-height: 100vh;
       overflow-x: hidden;
-    }
-
-    /* 3D Neural Background */
-    #neural-canvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
-      background: var(--bg-color);
     }
 
     .dashboard-container {
@@ -239,7 +232,7 @@
   </style>
 </head>
 <body>
-  <canvas id="neural-canvas"></canvas>
+  
 
   <div class="dashboard-container">
     <div class="header">
@@ -272,73 +265,6 @@
   </div>
 
   <script>
-    /* --- 3D NEURAL NETWORK VISUALS --- */
-    const canvas = document.getElementById('neural-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let nodes = [];
-
-    function resize() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-      initNodes();
-    }
-
-    class Node {
-      constructor() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.8;
-        this.vy = (Math.random() - 0.5) * 0.8;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if(this.x < 0 || this.x > width) this.vx *= -1;
-        if(this.y < 0 || this.y > height) this.vy *= -1;
-      }
-    }
-
-    function initNodes() {
-      nodes = [];
-      const count = Math.floor((width * height) / 12000);
-      for(let i=0; i<count; i++) nodes.push(new Node());
-    }
-
-    function animate() {
-      ctx.fillStyle = '#09090b';
-      ctx.fillRect(0, 0, width, height);
-      
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
-      nodes.forEach(node => {
-        node.update();
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, 2, 0, Math.PI*2);
-        ctx.fill();
-
-        nodes.forEach(other => {
-          const dx = node.x - other.x;
-          const dy = node.y - other.y;
-          const dist = Math.sqrt(dx*dx + dy*dy);
-          if(dist < 120) {
-            ctx.strokeStyle = `rgba(255, 255, 255, ${0.05 * (1 - dist/120)})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(node.x, node.y);
-            ctx.lineTo(other.x, other.y);
-            ctx.stroke();
-          }
-        });
-      });
-      requestAnimationFrame(animate);
-    }
-
-    window.addEventListener('resize', resize);
-    resize();
-    animate();
-
     /* --- ORIGINAL OWNER LOGIC (UNTOUCHED) --- */
     const urlParams = new URLSearchParams(window.location.search);
     const ownerEmail = urlParams.get('email');

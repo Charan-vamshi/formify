@@ -28,22 +28,13 @@
     
     body {
       font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: var(--bg-dark);
+      background: #09090b;
+      
+      background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 119, 198, 0.15), transparent);
       color: var(--text-main);
       min-height: 100vh;
       overflow-x: hidden;
       line-height: 1.6;
-    }
-
-    /* 3D Background Canvas */
-    #bg-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background: var(--bg-dark);
     }
 
     .main-container {
@@ -313,7 +304,7 @@
 </head>
 <body>
 
-  <canvas id="bg-canvas"></canvas>
+  
 
   <div class="main-container">
     <div class="header">
@@ -383,69 +374,6 @@
   </div>
 
   <script>
-    /* --- 3D INTERACTIVE BACKGROUND LOGIC --- */
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    class Particle {
-      constructor() {
-        this.reset();
-      }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.z = Math.random() * canvas.width;
-        this.pz = this.z;
-        this.speed = 1.5;
-      }
-      update() {
-        this.z -= this.speed;
-        if (this.z < 1) {
-          this.reset();
-          this.pz = this.z;
-        }
-      }
-      draw() {
-        const cx = canvas.width / 2;
-        const cy = canvas.height / 2;
-        const x = (this.x - cx) * (canvas.width / this.z) + cx;
-        const y = (this.y - cy) * (canvas.width / this.z) + cy;
-        const r = (canvas.width / this.z) * 1.5;
-
-        const px = (this.x - cx) * (canvas.width / this.pz) + cx;
-        const py = (this.y - cy) * (canvas.width / this.pz) + cy;
-
-        ctx.beginPath();
-        ctx.strokeStyle = \`rgba(255, 255, 255, \${(1 - this.z/canvas.width) * 0.15})\`;
-        ctx.lineWidth = r/4;
-        ctx.moveTo(px, py);
-        ctx.lineTo(x, y);
-        ctx.stroke();
-        this.pz = this.z;
-      }
-    }
-
-    for (let i = 0; i < 200; i++) particles.push(new Particle());
-
-    function animate() {
-      ctx.fillStyle = 'rgba(9, 9, 11, 0.3)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animate);
-    }
-    animate();
-
     /* --- ORIGINAL LOGIC (UNTOUCHED) --- */
     const urlParams = new URLSearchParams(window.location.search);
     const adminEmail = urlParams.get('email');
@@ -462,18 +390,18 @@
 
     function addQuestion() {
       questionCounter++;
-      const questionId = \`q\${questionCounter}\`;
+      const questionId = `q${questionCounter}`;
       
-      const questionHTML = \`
-        <div class="question-card" id="\${questionId}">
+      const questionHTML = `
+        <div class="question-card" id="${questionId}">
           <div class="question-header">
-            <span class="question-number">Question \${questionCounter}</span>
-            <button class="delete-question" onclick="removeQuestion('\${questionId}')">Delete</button>
+            <span class="question-number">Question ${questionCounter}</span>
+            <button class="delete-question" onclick="removeQuestion('${questionId}')">Delete</button>
           </div>
           
-          <input type="text" placeholder="Enter your question text" id="\${questionId}-text">
+          <input type="text" placeholder="Enter your question text" id="${questionId}-text">
           
-          <select id="\${questionId}-type" onchange="handleTypeChange('\${questionId}')">
+          <select id="${questionId}-type" onchange="handleTypeChange('${questionId}')">
             <option value="text">Short Text</option>
             <option value="textarea">Long Text</option>
             <option value="email">Email Address</option>
@@ -484,14 +412,14 @@
             <option value="dropdown">Dropdown Select</option>
           </select>
           
-          <div id="\${questionId}-options" style="display: none;"></div>
+          <div id="${questionId}-options" style="display: none;"></div>
           
           <div class="toggle-container" style="margin-top: 15px; font-size: 0.9em; background: transparent; padding: 0;">
-            <input type="checkbox" id="\${questionId}-required" style="width: auto; margin-bottom: 0;">
-            <label for="\${questionId}-required">Required field</label>
+            <input type="checkbox" id="${questionId}-required" style="width: auto; margin-bottom: 0;">
+            <label for="${questionId}-required">Required field</label>
           </div>
         </div>
-      \`;
+      `;
       
       document.getElementById('questionsContainer').insertAdjacentHTML('beforeend', questionHTML);
       questions.push(questionId);
@@ -506,29 +434,29 @@
 
     function renumberQuestions() {
       questions.forEach((qId, index) => {
-        const numberSpan = document.querySelector(\`#\${qId} .question-number\`);
+        const numberSpan = document.querySelector(`#${qId} .question-number`);
         if (numberSpan) {
-          numberSpan.textContent = \`Question \${index + 1}\`;
+          numberSpan.textContent = `Question ${index + 1}`;
         }
       });
     }
 
     function handleTypeChange(questionId) {
-      const type = document.getElementById(\`\${questionId}-type\`).value;
-      const optionsDiv = document.getElementById(\`\${questionId}-options\`);
+      const type = document.getElementById(`${questionId}-type`).value;
+      const optionsDiv = document.getElementById(`${questionId}-options`);
       
       if (type === 'multiple' || type === 'checkbox' || type === 'dropdown') {
         optionsDiv.style.display = 'block';
-        optionsDiv.innerHTML = \`
+        optionsDiv.innerHTML = `
           <h4 style="color: var(--text-main); margin: 18px 0 12px 0; font-size: 0.9em;">Define Options:</h4>
-          <div id="\${questionId}-options-list">
+          <div id="${questionId}-options-list">
             <div class="option-group">
               <input type="text" placeholder="Option 1" class="option-input">
               <button class="remove-option-btn delete-question" onclick="removeOption(this)" style="display: none; padding: 0 12px;">-</button>
             </div>
           </div>
-          <button class="add-option-btn" onclick="addOption('\${questionId}')" style="margin-top:10px;">+ Add Option</button>
-        \`;
+          <button class="add-option-btn" onclick="addOption('${questionId}')" style="margin-top:10px;">+ Add Option</button>
+        `;
       } else {
         optionsDiv.style.display = 'none';
         optionsDiv.innerHTML = '';
@@ -536,15 +464,15 @@
     }
 
     function addOption(questionId) {
-      const optionsList = document.getElementById(\`\${questionId}-options-list\`);
+      const optionsList = document.getElementById(`${questionId}-options-list`);
       const optionCount = optionsList.querySelectorAll('.option-group').length + 1;
       
-      const optionHTML = \`
+      const optionHTML = `
         <div class="option-group">
-          <input type="text" placeholder="Option \${optionCount}" class="option-input">
+          <input type="text" placeholder="Option ${optionCount}" class="option-input">
           <button class="remove-option-btn delete-question" onclick="removeOption(this)" style="padding: 0 12px;">-</button>
         </div>
-      \`;
+      `;
       
       optionsList.insertAdjacentHTML('beforeend', optionHTML);
       
@@ -564,7 +492,7 @@
       }
       
       remainingGroups.forEach((group, index) => {
-        group.querySelector('input').placeholder = \`Option \${index + 1}\`;
+        group.querySelector('input').placeholder = `Option ${index + 1}`;
       });
     }
 
@@ -590,12 +518,12 @@
       }
 
       const formStructure = questions.map((qId, index) => {
-        const text = document.getElementById(\`\${qId}-text\`).value;
-        const type = document.getElementById(\`\${qId}-type\`).value;
-        const required = document.getElementById(\`\${qId}-required\`).checked;
+        const text = document.getElementById(`${qId}-text`).value;
+        const type = document.getElementById(`${qId}-type`).value;
+        const required = document.getElementById(`${qId}-required`).checked;
 
         if (!text) {
-          throw new Error(\`Question \${index + 1} is missing text\`);
+          throw new Error(`Question ${index + 1} is missing text`);
         }
 
         const question = {
@@ -606,11 +534,11 @@
         };
 
         if (type === 'multiple' || type === 'checkbox' || type === 'dropdown') {
-          const optionInputs = document.querySelectorAll(\`#\${qId}-options-list .option-input\`);
+          const optionInputs = document.querySelectorAll(`#${qId}-options-list .option-input`);
           const options = Array.from(optionInputs).map(input => input.value.trim()).filter(v => v);
           
           if (options.length === 0) {
-            throw new Error(\`Question \${index + 1} needs at least one option\`);
+            throw new Error(`Question ${index + 1} needs at least one option`);
           }
           
           question.options = options;
@@ -706,32 +634,32 @@
           return form;
         }));
 
-        formList.innerHTML = formsWithCounts.map(form => \`
+        formList.innerHTML = formsWithCounts.map(form => `
           <div class="form-card">
             <div>
-              <div class="form-title">\${form.formtitle}</div>
+              <div class="form-title">${form.formtitle}</div>
               <div class="form-status">
-                <span>Status: <strong>\${form.islive ? '🟢 Live' : '🟡 Draft'}</strong></span>
-                <span>Access: <strong>\${form.requirewhitelist ? '🔒 Whitelist' : '🌐 Public'}</strong></span>
-                <span>Responses: <strong>\${form.responseCount}</strong></span>
-                <span>Created: <strong>\${new Date(form.createdat).toLocaleDateString()}</strong></span>
+                <span>Status: <strong>${form.islive ? '🟢 Live' : '🟡 Draft'}</strong></span>
+                <span>Access: <strong>${form.requirewhitelist ? '🔒 Whitelist' : '🌐 Public'}</strong></span>
+                <span>Responses: <strong>${form.responseCount}</strong></span>
+                <span>Created: <strong>${new Date(form.createdat).toLocaleDateString()}</strong></span>
               </div>
             </div>
             <div class="form-actions">
-              \${!form.islive ? \`<button onclick="goLive(\${form.formid})">Go Live</button>\` : ''}
-              <button onclick="copyFormLink(\${form.formid})">Copy Link</button>
-              <button onclick="viewSubmissions(\${form.formid})">View Submissions</button>
-              <button onclick="deleteForm(\${form.formid})" class="delete-question">Delete</button>
+              ${!form.islive ? `<button onclick="goLive(${form.formid})">Go Live</button>` : ''}
+              <button onclick="copyFormLink(${form.formid})">Copy Link</button>
+              <button onclick="viewSubmissions(${form.formid})">View Submissions</button>
+              <button onclick="deleteForm(${form.formid})" class="delete-question">Delete</button>
             </div>
           </div>
-        \`).join('');
+        `).join('');
       } else {
         formList.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 40px; font-size: 1.1em;">No forms created yet. Create your first form above!</p>';
       }
     }
 
     function copyFormLink(formId) {
-      const link = \`https://formify-y9mb.onrender.com/form.html?id=\${formId}\`;
+      const link = `https://formify-y9mb.onrender.com/form.html?id=${formId}`;
       navigator.clipboard.writeText(link);
       alert('✅ Form link copied to clipboard!');
     }
@@ -749,7 +677,7 @@
     }
 
     function viewSubmissions(formId) {
-      window.location.href = \`/responses.html?formId=\${formId}&adminEmail=\${adminEmail}\`;
+      window.location.href = `/responses.html?formId=${formId}&adminEmail=${adminEmail}`;
     }
 
     async function deleteForm(formId) {
@@ -768,7 +696,7 @@
 
     function showMessage(elementId, message, type) {
       const msgEl = document.getElementById(elementId);
-      msgEl.innerHTML = \`<div class="message \${type}">\${message}</div>\`;
+      msgEl.innerHTML = `<div class="message ${type}">${message}</div>`;
       setTimeout(() => msgEl.innerHTML = '', 5000);
     }
 
