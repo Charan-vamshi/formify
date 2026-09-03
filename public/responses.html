@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form Responses - Formify</title>
+  <title>Form Responses - Smart Form X</title>
   <style>
     :root {
-      --primary: #00d4ff;
-      --primary-glow: rgba(0, 212, 255, 0.4);
-      --bg-dark: #0a0e27;
-      --card-bg: rgba(0, 0, 0, 0.4);
-      --border: rgba(255, 255, 255, 0.1);
-      --text-muted: #b0b0c0;
+      --primary: #fafafa;
+      --primary-glow: rgba(255, 255, 255, 0.1);
+      --bg-dark: #09090b;
+      --card-bg: #18181b;
+      --border: rgba(255, 255, 255, 0.06);
+      --text-muted: #a1a1aa;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -19,7 +19,7 @@
     body {
       font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
       background: var(--bg-dark);
-      color: #fff;
+      color: var(--primary);
       min-height: 100vh;
       padding: 40px 20px;
       overflow-x: hidden;
@@ -30,7 +30,7 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: 0;
-      background: radial-gradient(circle at center, #1a1d3a 0%, #0a0e27 100%);
+      background: radial-gradient(circle at center, #111113 0%, #09090b 100%);
     }
 
     .main-wrapper {
@@ -54,7 +54,7 @@
     }
     
     h1 { 
-      background: linear-gradient(135deg, #fff, var(--primary));
+      background: linear-gradient(135deg, #ffffff, #a1a1aa);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 2.4em;
@@ -74,19 +74,23 @@
       padding: 24px;
       border-radius: 20px;
       border: 1px solid var(--border);
-      border-left: 4px solid var(--primary);
+      border-left: 4px solid var(--text-muted);
       backdrop-filter: blur(15px);
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .stat-card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 30px var(--primary-glow);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .stat-card:active {
+      transform: scale(0.97);
     }
     
     .stat-value {
       font-size: 2.5em;
-      color: #fff;
+      color: var(--primary);
       font-weight: 800;
       line-height: 1;
     }
@@ -127,15 +131,19 @@
       background: rgba(0, 0, 0, 0.3);
       border: 1px solid var(--border);
       border-radius: 12px;
-      color: #fff;
+      color: var(--primary);
       font-size: 0.95em;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
     
     input:focus, select:focus {
       outline: none;
-      border-color: var(--primary);
+      border-color: var(--text-muted);
       box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    input:active, select:active {
+      transform: scale(0.97);
     }
 
     .button-group {
@@ -146,15 +154,15 @@
     }
     
     button {
-      background: linear-gradient(135deg, var(--primary), #0099cc);
-      color: #0a0e27;
+      background: var(--primary);
+      color: var(--bg-dark);
       border: none;
       padding: 14px 28px;
       font-size: 1em;
       font-weight: 700;
       border-radius: 12px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
       display: inline-flex;
       align-items: center;
       gap: 8px;
@@ -162,12 +170,16 @@
 
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 20px var(--primary-glow);
+      box-shadow: 0 10px 20px rgba(255, 255, 255, 0.05);
     }
 
-    .back-btn {
-      background: rgba(255, 255, 255, 0.05);
-      color: #fff;
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .back-btn, .btn-secondary {
+      background: var(--card-bg);
+      color: var(--primary);
       border: 1px solid var(--border);
     }
 
@@ -190,15 +202,15 @@
     }
     
     th {
-      background: rgba(0, 212, 255, 0.08);
-      color: var(--primary);
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-muted);
       padding: 20px;
       text-align: left;
       font-weight: 700;
       font-size: 0.9em;
       text-transform: uppercase;
       letter-spacing: 1px;
-      border-bottom: 2px solid var(--primary);
+      border-bottom: 1px solid var(--border);
       position: sticky;
       top: 0;
       z-index: 2;
@@ -208,12 +220,12 @@
       padding: 18px 20px;
       border-bottom: 1px solid var(--border);
       font-size: 0.95em;
-      color: #e0e0e0;
+      color: var(--text-muted);
     }
     
     tr:hover td {
-      background: rgba(255, 255, 255, 0.03);
-      color: #fff;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--primary);
     }
 
     .spinner {
@@ -265,7 +277,7 @@
       </div>
       <div class="button-group">
         <button onclick="applyFilters()">Apply Filters</button>
-        <button onclick="resetFilters()" style="background: rgba(255, 255, 255, 0.1); color: #fff;">Reset</button>
+        <button onclick="resetFilters()" class="btn-secondary">Reset</button>
         <button onclick="downloadFilteredCSV()">📥 Download CSV</button>
       </div>
     </div>
@@ -310,11 +322,11 @@
     for (let i = 0; i < 100; i++) nodes.push(new DataNode());
 
     function draw() {
-      ctx.fillStyle = 'rgba(10, 14, 39, 0.2)';
+      ctx.fillStyle = 'rgba(9, 9, 11, 0.2)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       nodes.forEach((node, i) => {
         node.update();
-        ctx.fillStyle = 'rgba(0, 212, 255, 0.4)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.size, 0, Math.PI * 2);
         ctx.fill();
@@ -323,7 +335,7 @@
           const dy = node.y - nodes[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 150) {
-            ctx.strokeStyle = `rgba(0, 212, 255, ${0.1 * (1 - dist/150)})`;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 * (1 - dist/150)})`;
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -373,7 +385,7 @@
           renderTable();
           updateStats();
         } else {
-          document.getElementById('tableContent').innerHTML = '<div style="text-align:center; padding: 50px; color:#b0b0c0;">No submissions yet.</div>';
+          document.getElementById('tableContent').innerHTML = '<div style="text-align:center; padding: 50px; color:var(--text-muted);">No submissions yet.</div>';
         }
       } catch (error) {
         document.getElementById('tableContent').innerHTML = '<div style="text-align:center; padding: 50px; color:#f87171;">Error loading responses.</div>';
@@ -418,7 +430,7 @@
 
     function renderTable() {
       if (filteredSubmissions.length === 0) {
-        document.getElementById('tableContent').innerHTML = '<div style="text-align:center; padding: 50px; color:#b0b0c0;">No results match your filters.</div>';
+        document.getElementById('tableContent').innerHTML = '<div style="text-align:center; padding: 50px; color:var(--text-muted);">No results match your filters.</div>';
         return;
       }
 
@@ -433,7 +445,7 @@
 
       filteredSubmissions.forEach((sub, index) => {
         html += `<tr><td><strong>${index + 1}</strong></td>`;
-        html += `<td><strong style="color: #00d4ff;">${sub.studentemail}</strong></td>`;
+        html += `<td><strong style="color: var(--primary);">${sub.studentemail}</strong></td>`;
         html += `<td>${sub.submittedat.toLocaleString()}</td>`;
         
         formStructure.forEach(q => {

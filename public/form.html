@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form - Formify</title>
+  <title>Form - Smart Form X</title>
   <style>
     :root {
-      --primary: #00d4ff;
-      --primary-dark: #0099cc;
-      --bg-dark: #0a0e27;
-      --border: rgba(0, 212, 255, 0.3);
+      --primary: #fafafa;
+      --bg-dark: #09090b;
+      --container-bg: #18181b;
+      --text-muted: #a1a1aa;
+      --border: rgba(255, 255, 255, 0.06);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
       font-family: 'Inter', 'Segoe UI', sans-serif;
-      background: #0a0e27;
-      color: #fff;
+      background: var(--bg-dark);
+      color: #fafafa;
       min-height: 100vh;
       overflow-y: auto; 
       overflow-x: hidden;
@@ -35,11 +36,11 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      background: radial-gradient(circle at center, #1a1d3a 0%, #0a0e27 100%);
+      background: radial-gradient(circle at center, #18181b 0%, #09090b 100%);
     }
 
     .container {
-      background: rgba(0, 0, 0, 0.4);
+      background: var(--container-bg);
       padding: 50px;
       border-radius: 28px;
       max-width: 800px;
@@ -49,7 +50,7 @@
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
       position: relative;
       z-index: 2;
-      animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+      animation: slideUp 0.8s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     @keyframes slideUp {
@@ -58,7 +59,7 @@
     }
     
     h1 {
-      background: linear-gradient(135deg, #fff, var(--primary));
+      background: linear-gradient(135deg, #ffffff, #a1a1aa);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 2.5em;
@@ -68,7 +69,7 @@
     }
     
     .form-description {
-      color: #b0b0c0;
+      color: var(--text-muted);
       margin-bottom: 40px;
       text-align: center;
       font-size: 1.1em;
@@ -79,8 +80,8 @@
       padding: 25px;
       background: rgba(255, 255, 255, 0.03);
       border-radius: 18px;
-      border-left: 4px solid var(--primary);
-      transition: all 0.3s ease;
+      border-left: 4px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .question-block:hover {
@@ -99,19 +100,19 @@
     input[type="text"], input[type="email"], input[type="number"], input[type="date"], textarea, select {
       width: 100%;
       padding: 14px 18px;
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
       border-radius: 12px;
-      color: #fff;
+      color: #fafafa;
       font-size: 1em;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
     }
     
     input:focus, textarea:focus, select:focus {
       outline: none;
-      border-color: var(--primary);
-      background: rgba(0, 0, 0, 0.4);
-      box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
+      border-color: #fafafa;
+      background: rgba(255, 255, 255, 0.06);
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
     }
 
     .option-item {
@@ -124,17 +125,21 @@
       margin-bottom: 10px;
       cursor: pointer;
       border: 1px solid transparent;
-      transition: 0.2s;
+      transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
     }
     
     .option-item:hover {
       background: rgba(255, 255, 255, 0.07);
-      border-color: rgba(0, 212, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .option-item:active {
+      transform: scale(0.97);
     }
     
     .submit-btn {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #0a0e27;
+      background: #fafafa;
+      color: #09090b;
       border: none;
       padding: 18px;
       font-size: 1.2em;
@@ -143,21 +148,25 @@
       cursor: pointer;
       width: 100%;
       margin-top: 20px;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .submit-btn:hover:not(:disabled) {
       transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
+      box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+    }
+
+    .submit-btn:active:not(:disabled) {
+      transform: scale(0.97);
     }
 
     .spinner {
       border: 3px solid rgba(255, 255, 255, 0.1);
-      border-top: 3px solid var(--primary);
+      border-top: 3px solid #fafafa;
       border-radius: 50%;
       width: 40px;
       height: 40px;
-      animation: spin 1s linear infinite;
+      animation: spin 1s cubic-bezier(0.22, 1, 0.36, 1) infinite;
       margin: 20px auto;
     }
 
@@ -177,7 +186,7 @@
     <div id="content">
       <div class="loading">
         <div class="spinner"></div>
-        <p style="text-align: center; color: #b0b0c0;">Initialising form securely...</p>
+        <p style="text-align: center; color: var(--text-muted);">Initialising form securely...</p>
       </div>
     </div>
   </div>
@@ -204,9 +213,9 @@
     }
 
     function animate() {
-      ctx.fillStyle = '#0a0e27';
+      ctx.fillStyle = '#09090b';
       ctx.fillRect(0,0, canvas.width, canvas.height);
-      ctx.fillStyle = '#00d4ff';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
       stars.forEach(s => {
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
@@ -311,7 +320,7 @@
       `;
 
       structure.forEach((question, index) => {
-        formHTML += `<div class="question-block" style="animation: slideUp 0.5s ease forwards ${index * 0.1}s; opacity: 0;">`;
+        formHTML += `<div class="question-block" style="animation: slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards ${index * 0.1}s; opacity: 0;">`;
         formHTML += `<div class="question-label">${index + 1}. ${question.label}`;
         if (question.required) {
           formHTML += `<span class="required">*</span>`;

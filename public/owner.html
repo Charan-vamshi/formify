@@ -3,29 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Owner Dashboard - Formify</title>
+  <title>Owner Dashboard - Smart Form X</title>
   <style>
-    /* THEME: Midnight Command Center
-       STYLE: High-Security Glassmorphism
+    /* THEME: Smart Form X
+       STYLE: Minimal Dark
        LOGIC: Preserved Intact
     */
     :root {
-      --cyan: #00d4ff;
-      --cyan-dim: rgba(0, 212, 255, 0.1);
-      --obsidian: #050505;
-      --navy: #0a0e27;
-      --glass: rgba(10, 14, 39, 0.6);
-      --border: rgba(0, 212, 255, 0.2);
+      --bg-color: #09090b;
+      --card-bg: #18181b;
+      --text-main: #fafafa;
+      --text-muted: #a1a1aa;
+      --border: rgba(255, 255, 255, 0.06);
+      --border-hover: rgba(255, 255, 255, 0.15);
       --danger: #ef4444;
       --success: #10b981;
+      --accent: #ffffff;
+      --accent-dim: rgba(255, 255, 255, 0.1);
+      --transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-      background-color: var(--obsidian);
-      color: #fff;
+      background-color: var(--bg-color);
+      color: var(--text-main);
       min-height: 100vh;
       overflow-x: hidden;
     }
@@ -36,7 +39,7 @@
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: -1;
-      background: radial-gradient(circle at 50% 50%, #1a1d3a 0%, #000 100%);
+      background: var(--bg-color);
     }
 
     .dashboard-container {
@@ -49,66 +52,62 @@
 
     /* Header Panel */
     .header {
-      background: var(--glass);
+      background: var(--card-bg);
       padding: 35px;
       border-radius: 24px;
       margin-bottom: 40px;
       border: 1px solid var(--border);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 0 40px rgba(0, 212, 255, 0.1);
+      backdrop-filter: blur(10px);
       position: relative;
       overflow: hidden;
+      transition: var(--transition);
     }
 
     .header::before {
       content: '';
       position: absolute;
       top: 0; left: 0; width: 4px; height: 100%;
-      background: var(--cyan);
-      box-shadow: 0 0 15px var(--cyan);
+      background: var(--text-muted);
     }
     
     h1 {
-      color: #fff;
+      color: var(--text-main);
       font-size: 2.8em;
-      font-weight: 800;
+      font-weight: 700;
       margin-bottom: 10px;
       letter-spacing: -1px;
-      text-transform: uppercase;
     }
 
     .badge-owner {
-      background: rgba(0, 212, 255, 0.15);
-      color: var(--cyan);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
       padding: 4px 12px;
       border-radius: 4px;
       font-size: 0.9em;
-      border: 1px solid var(--cyan);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 700;
+      border: 1px solid var(--border);
+      font-weight: 500;
     }
     
     /* Content Sections */
     .section {
-      background: rgba(0, 0, 0, 0.4);
+      background: var(--card-bg);
       padding: 40px;
       border-radius: 20px;
       margin-bottom: 30px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(15px);
-      transition: transform 0.3s ease;
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      transition: var(--transition);
     }
 
     .section:hover {
-      border-color: var(--border);
+      border-color: var(--border-hover);
     }
     
     h2 {
-      color: var(--cyan);
+      color: var(--text-main);
       margin-bottom: 25px;
       font-size: 1.5em;
-      font-weight: 600;
+      font-weight: 500;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -118,50 +117,49 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, var(--border), transparent);
+      background: linear-gradient(90deg, rgba(255,255,255,0.1), transparent);
     }
     
     /* Inputs */
     input {
       width: 100%;
       padding: 18px 24px;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
       border-radius: 12px;
-      color: #fff;
+      color: var(--text-main);
       font-size: 1.1em;
       margin-bottom: 20px;
-      transition: all 0.3s ease;
+      transition: var(--transition);
       font-family: monospace;
     }
     
     input:focus {
       outline: none;
-      border-color: var(--cyan);
-      box-shadow: 0 0 25px var(--cyan-dim);
-      background: rgba(0, 0, 0, 0.6);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.05);
     }
     
     /* Buttons */
     button {
-      background: linear-gradient(135deg, var(--cyan), #0099cc);
-      color: #000;
-      border: none;
+      background: var(--text-main);
+      color: var(--bg-color);
+      border: 1px solid transparent;
       padding: 16px 32px;
       font-size: 1em;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      font-weight: 600;
       border-radius: 12px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 20px rgba(0, 212, 255, 0.2);
+      transition: var(--transition);
     }
     
     button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(0, 212, 255, 0.4);
-      filter: brightness(1.1);
+      background: #e4e4e7;
+    }
+
+    button:active {
+      transform: scale(0.97);
     }
     
     /* Admin List Grid */
@@ -173,52 +171,52 @@
     }
     
     .admin-card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+      background: rgba(255, 255, 255, 0.02);
       padding: 25px;
       border-radius: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       gap: 15px;
-      transition: all 0.3s ease;
+      transition: var(--transition);
       position: relative;
     }
 
     .admin-card:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: var(--cyan);
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      background: rgba(255, 255, 255, 0.04);
+      border-color: var(--border-hover);
     }
     
     .admin-email {
       font-size: 1.1em;
-      color: #fff;
+      color: var(--text-main);
       font-weight: 500;
       word-break: break-all;
     }
     
     .admin-stats {
-      color: #64748b;
+      color: var(--text-muted);
       font-size: 0.85em;
       font-family: monospace;
-      text-transform: uppercase;
     }
 
     .remove-btn {
-      background: rgba(239, 68, 68, 0.1);
+      background: rgba(239, 68, 68, 0.05);
       color: var(--danger);
-      border: 1px solid rgba(239, 68, 68, 0.3);
+      border: 1px solid rgba(239, 68, 68, 0.2);
       padding: 10px;
       font-size: 0.85em;
       margin-top: auto;
-      box-shadow: none;
+      font-weight: 500;
     }
 
     .remove-btn:hover {
-      background: var(--danger);
-      color: #fff;
-      box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+
+    .remove-btn:active {
+      transform: scale(0.97);
     }
     
     /* Messages */
@@ -226,9 +224,9 @@
       padding: 15px;
       border-radius: 12px;
       margin-top: 20px;
-      font-weight: 600;
+      font-weight: 500;
       text-align: center;
-      animation: slideIn 0.3s ease;
+      animation: slideIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
     
     @keyframes slideIn {
@@ -236,8 +234,8 @@
       to { opacity: 1; transform: translateY(0); }
     }
     
-    .success { background: rgba(16, 185, 129, 0.15); color: var(--success); border: 1px solid var(--success); }
-    .error { background: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid var(--danger); }
+    .success { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
+    .error { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
   </style>
 </head>
 <body>
@@ -246,8 +244,8 @@
   <div class="dashboard-container">
     <div class="header">
       <div>
-        <h1>SYSTEM OVERLORD</h1>
-        <p style="font-size: 1.1em; color: #94a3b8; display: flex; align-items: center; gap: 10px;">
+        <h1>Owner Dashboard</h1>
+        <p style="font-size: 1.1em; color: var(--text-muted); display: flex; align-items: center; gap: 10px;">
           AUTHENTICATED USER: 
           <span class="badge-owner" id="ownerEmail"></span>
         </p>
@@ -266,7 +264,7 @@
     <div class="section">
       <h2>Active Personnel Registry</h2>
       <div class="admin-list" id="adminList">
-        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">
+        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--text-muted);">
           Initialising database connection...
         </div>
       </div>
@@ -310,10 +308,10 @@
     }
 
     function animate() {
-      ctx.fillStyle = '#050505';
+      ctx.fillStyle = '#09090b';
       ctx.fillRect(0, 0, width, height);
       
-      ctx.fillStyle = '#00d4ff';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
       nodes.forEach(node => {
         node.update();
         ctx.beginPath();
@@ -325,7 +323,7 @@
           const dy = node.y - other.y;
           const dist = Math.sqrt(dx*dx + dy*dy);
           if(dist < 120) {
-            ctx.strokeStyle = `rgba(0, 212, 255, ${0.15 * (1 - dist/120)})`;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${0.05 * (1 - dist/120)})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
@@ -390,7 +388,7 @@
           </div>
         `).join('');
       } else {
-        adminList.innerHTML = '<p style="color: #64748b; grid-column: 1/-1; text-align: center;">No active administrators found in registry.</p>';
+        adminList.innerHTML = '<p style="color: var(--text-muted); grid-column: 1/-1; text-align: center;">No active administrators found in registry.</p>';
       }
     }
 

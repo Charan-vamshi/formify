@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard - Formify</title>
+  <title>Admin Dashboard - Smart Form X</title>
   <style>
     /* UI ENHANCEMENTS: 
        - Modern Typography
@@ -12,22 +12,24 @@
        - Improved Spacing & Alignment
     */
     :root {
-      --primary: #00d4ff;
-      --primary-dark: #0099cc;
-      --bg-dark: #0a0e27;
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --border: rgba(255, 255, 255, 0.1);
-      --accent: #7b2cbf;
+      --primary: #fafafa;
+      --primary-dark: #d4d4d8;
+      --bg-dark: #09090b;
+      --card-bg: #18181b;
+      --border: rgba(255, 255, 255, 0.06);
+      --accent: #a1a1aa;
       --success: #10b981;
       --danger: #dc2626;
+      --text-main: #fafafa;
+      --text-muted: #a1a1aa;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
     body {
       font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: #0a0e27;
-      color: #fff;
+      background: var(--bg-dark);
+      color: var(--text-main);
       min-height: 100vh;
       overflow-x: hidden;
       line-height: 1.6;
@@ -41,7 +43,7 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      background: radial-gradient(circle at center, #1a1d3a 0%, #0a0e27 100%);
+      background: var(--bg-dark);
     }
 
     .main-container {
@@ -53,11 +55,11 @@
 
     /* Header Styling */
     .header {
-      background: rgba(10, 14, 39, 0.7);
+      background: var(--card-bg);
       padding: 40px;
       border-radius: 24px;
       margin-bottom: 40px;
-      border: 1px solid rgba(0, 212, 255, 0.2);
+      border: 1px solid var(--border);
       backdrop-filter: blur(15px);
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
       display: flex;
@@ -66,7 +68,7 @@
     }
 
     h1 {
-      background: linear-gradient(135deg, #00d4ff, #ffffff);
+      background: linear-gradient(135deg, #fafafa, #a1a1aa);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       font-size: 2.5em;
@@ -80,17 +82,17 @@
 
     /* Section & Cards */
     .section {
-      background: rgba(255, 255, 255, 0.03);
+      background: var(--card-bg);
       padding: 40px;
       border-radius: 24px;
       margin-bottom: 40px;
       border: 1px solid var(--border);
       backdrop-filter: blur(12px);
-      transition: transform 0.3s ease, border-color 0.3s ease;
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .section:hover {
-      border-color: rgba(0, 212, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.15);
     }
     
     h2 {
@@ -107,7 +109,7 @@
       content: '';
       width: 4px;
       height: 28px;
-      background: var(--primary);
+      background: var(--accent);
       border-radius: 4px;
       display: inline-block;
     }
@@ -119,30 +121,30 @@
       background: rgba(0, 0, 0, 0.2);
       border: 1px solid var(--border);
       border-radius: 12px;
-      color: #fff;
+      color: var(--text-main);
       font-size: 1rem;
       margin-bottom: 20px;
-      transition: all 0.2s ease;
+      transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
     }
     
     input:focus, textarea:focus, select:focus {
       outline: none;
-      border-color: var(--primary);
+      border-color: rgba(255, 255, 255, 0.3);
       background: rgba(0, 0, 0, 0.4);
-      box-shadow: 0 0 0 4px rgba(0, 212, 255, 0.1);
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
     }
 
     /* Buttons */
     button {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #0a0e27;
+      background: var(--primary);
+      color: var(--bg-dark);
       border: none;
       padding: 12px 28px;
       font-size: 1rem;
       font-weight: 700;
       border-radius: 10px;
       cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -151,19 +153,35 @@
 
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
-      filter: brightness(1.1);
+      box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
     }
 
-    button:active { transform: translateY(0); }
+    button:active {
+      transform: scale(0.97);
+    }
+
+    /* Secondary button styling logic */
+    .form-actions button {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+    }
+
+    .form-actions button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: var(--text-main);
+    }
 
     /* Question Cards */
     .question-card {
-      background: rgba(0, 0, 0, 0.25);
+      background: #18181b;
       padding: 30px;
       border-radius: 18px;
       margin-bottom: 25px;
-      border-left: 4px solid var(--primary);
+      border-left: 4px solid var(--accent);
+      border-top: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
       position: relative;
     }
     
@@ -175,8 +193,8 @@
     }
     
     .question-number {
-      background: rgba(0, 212, 255, 0.15);
-      color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
       padding: 6px 16px;
       border-radius: 8px;
       font-weight: 700;
@@ -186,15 +204,15 @@
     }
     
     .delete-question {
-      background: rgba(220, 38, 38, 0.1);
-      color: #f87171;
-      border: 1px solid rgba(220, 38, 38, 0.2);
+      background: rgba(220, 38, 38, 0.1) !important;
+      color: #f87171 !important;
+      border: 1px solid rgba(220, 38, 38, 0.2) !important;
     }
     
     .delete-question:hover {
-      background: var(--danger);
-      color: white;
-      box-shadow: 0 8px 15px rgba(220, 38, 38, 0.3);
+      background: var(--danger) !important;
+      color: white !important;
+      box-shadow: 0 8px 15px rgba(220, 38, 38, 0.3) !important;
     }
 
     /* Option Groups */
@@ -206,11 +224,12 @@
     
     .option-group input { margin-bottom: 0; }
     
-    .add-option-btn { background: var(--success); color: white; padding: 8px 16px; font-size: 0.9em; }
+    .add-option-btn { background: rgba(255, 255, 255, 0.08); color: var(--text-main); padding: 8px 16px; font-size: 0.9em; border: 1px solid var(--border); }
+    .add-option-btn:hover { background: rgba(255, 255, 255, 0.15); }
 
     /* Form List Styling */
     .form-card {
-      background: rgba(255, 255, 255, 0.04);
+      background: #18181b;
       padding: 25px;
       border-radius: 16px;
       border: 1px solid var(--border);
@@ -218,12 +237,12 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 15px;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .form-card:hover {
-      background: rgba(255, 255, 255, 0.07);
-      border-color: var(--primary);
+      background: #1f1f22;
+      border-color: rgba(255, 255, 255, 0.2);
     }
     
     .form-title {
@@ -237,32 +256,20 @@
       display: flex;
       gap: 15px;
       font-size: 0.85em;
-      color: #b0b0c0;
+      color: var(--text-muted);
     }
 
-    .form-status strong { color: #fff; }
+    .form-status strong { color: var(--text-main); }
 
     .form-actions { display: flex; gap: 10px; }
     
-    .form-actions button {
-      padding: 8px 16px;
-      font-size: 0.85em;
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: 1px solid var(--border);
-    }
-
-    .form-actions button:hover {
-      background: var(--primary);
-      color: #0a0e27;
-    }
-
     /* Access Control UI */
     .whitelist-section {
       margin-top: 40px;
       padding: 30px;
       background: rgba(0, 0, 0, 0.2);
       border-radius: 18px;
+      border: 1px solid var(--border);
     }
 
     .toggle-container {
@@ -283,13 +290,13 @@
       font-weight: 600;
     }
 
-    .success { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid #34d399; }
-    .error { background: rgba(220, 38, 38, 0.2); color: #f87171; border: 1px solid #f87171; }
+    .success { background: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .error { background: rgba(220, 38, 38, 0.1); color: #f87171; border: 1px solid rgba(220, 38, 38, 0.3); }
 
     .spinner {
       width: 24px;
       height: 24px;
-      border: 3px solid rgba(0, 212, 255, 0.1);
+      border: 3px solid rgba(255, 255, 255, 0.1);
       border-top-color: var(--primary);
       border-radius: 50%;
       animation: spin 1s linear infinite;
@@ -312,22 +319,22 @@
     <div class="header">
       <div>
         <h1>Admin Dashboard</h1>
-        <p style="color: #b0b0c0; margin-top: 5px;">Manage your digital forms and responses</p>
+        <p style="color: var(--text-muted); margin-top: 5px;">Manage your digital forms and responses</p>
       </div>
       <div class="user-badge">
-        <p style="font-size: 0.9em; color: #b0b0c0;">Authenticated as</p>
-        <span id="adminEmail" style="color: var(--primary); font-weight: 700; font-size: 1.1em;"></span>
+        <p style="font-size: 0.9em; color: var(--text-muted);">Authenticated as</p>
+        <span id="adminEmail" style="color: var(--text-main); font-weight: 700; font-size: 1.1em;"></span>
       </div>
     </div>
 
     <div class="section">
       <h2>Create New Form</h2>
-      <label style="display: block; font-size: 0.9em; color: #b0b0c0; margin-bottom: 8px;">Form Title</label>
+      <label style="display: block; font-size: 0.9em; color: var(--text-muted); margin-bottom: 8px;">Form Title</label>
       <input type="text" id="formTitle" placeholder="e.g., Student Feedback Survey 2025">
       
       <div id="questionsContainer"></div>
       
-      <button class="add-question-btn" onclick="addQuestion()" style="width: 100%; background: rgba(255,255,255,0.05); color: var(--primary); border: 1px dashed var(--primary); margin-top: 10px;">
+      <button class="add-question-btn" onclick="addQuestion()" style="width: 100%; background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px dashed rgba(255,255,255,0.3); margin-top: 10px;">
         + Add Question Component
       </button>
 
@@ -353,13 +360,13 @@
           </div>
         </div>
         
-        <p id="publicAccessNote" style="display: none; color: var(--success); background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 12px; margin-top: 15px; font-size: 0.9em;">
+        <p id="publicAccessNote" style="display: none; color: var(--success); background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 12px; margin-top: 15px; font-size: 0.9em; border: 1px solid rgba(16, 185, 129, 0.3);">
           <strong>Public Mode:</strong> Anyone with the generated URL can submit responses.
         </p>
       </div>
 
       <div style="text-align: right; margin-top: 30px;">
-        <button onclick="createForm()" style="padding: 16px 50px; font-size: 1.1em;">Deploy Form</button>
+        <button onclick="createForm()" style="padding: 16px 50px; font-size: 1.1em; background: var(--primary); color: var(--bg-dark);">Deploy Form</button>
       </div>
       <div id="createMessage"></div>
     </div>
@@ -369,7 +376,7 @@
       <div class="form-list" id="formList">
         <div style="text-align: center; padding: 40px;">
           <div class="spinner" style="margin: 0 auto 15px;"></div>
-          <p>Syncing your forms...</p>
+          <p style="color: var(--text-muted);">Syncing your forms...</p>
         </div>
       </div>
     </div>
@@ -417,7 +424,7 @@
         const py = (this.y - cy) * (canvas.width / this.pz) + cy;
 
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(0, 212, 255, ${1 - this.z/canvas.width})`;
+        ctx.strokeStyle = \`rgba(255, 255, 255, \${(1 - this.z/canvas.width) * 0.15})\`;
         ctx.lineWidth = r/4;
         ctx.moveTo(px, py);
         ctx.lineTo(x, y);
@@ -429,7 +436,7 @@
     for (let i = 0; i < 200; i++) particles.push(new Particle());
 
     function animate() {
-      ctx.fillStyle = 'rgba(10, 14, 39, 0.2)';
+      ctx.fillStyle = 'rgba(9, 9, 11, 0.3)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => {
         p.update();
@@ -455,18 +462,18 @@
 
     function addQuestion() {
       questionCounter++;
-      const questionId = `q${questionCounter}`;
+      const questionId = \`q\${questionCounter}\`;
       
-      const questionHTML = `
-        <div class="question-card" id="${questionId}">
+      const questionHTML = \`
+        <div class="question-card" id="\${questionId}">
           <div class="question-header">
-            <span class="question-number">Question ${questionCounter}</span>
-            <button class="delete-question" onclick="removeQuestion('${questionId}')">Delete</button>
+            <span class="question-number">Question \${questionCounter}</span>
+            <button class="delete-question" onclick="removeQuestion('\${questionId}')">Delete</button>
           </div>
           
-          <input type="text" placeholder="Enter your question text" id="${questionId}-text">
+          <input type="text" placeholder="Enter your question text" id="\${questionId}-text">
           
-          <select id="${questionId}-type" onchange="handleTypeChange('${questionId}')">
+          <select id="\${questionId}-type" onchange="handleTypeChange('\${questionId}')">
             <option value="text">Short Text</option>
             <option value="textarea">Long Text</option>
             <option value="email">Email Address</option>
@@ -477,14 +484,14 @@
             <option value="dropdown">Dropdown Select</option>
           </select>
           
-          <div id="${questionId}-options" style="display: none;"></div>
+          <div id="\${questionId}-options" style="display: none;"></div>
           
           <div class="toggle-container" style="margin-top: 15px; font-size: 0.9em; background: transparent; padding: 0;">
-            <input type="checkbox" id="${questionId}-required" style="width: auto; margin-bottom: 0;">
-            <label for="${questionId}-required">Required field</label>
+            <input type="checkbox" id="\${questionId}-required" style="width: auto; margin-bottom: 0;">
+            <label for="\${questionId}-required">Required field</label>
           </div>
         </div>
-      `;
+      \`;
       
       document.getElementById('questionsContainer').insertAdjacentHTML('beforeend', questionHTML);
       questions.push(questionId);
@@ -499,29 +506,29 @@
 
     function renumberQuestions() {
       questions.forEach((qId, index) => {
-        const numberSpan = document.querySelector(`#${qId} .question-number`);
+        const numberSpan = document.querySelector(\`#\${qId} .question-number\`);
         if (numberSpan) {
-          numberSpan.textContent = `Question ${index + 1}`;
+          numberSpan.textContent = \`Question \${index + 1}\`;
         }
       });
     }
 
     function handleTypeChange(questionId) {
-      const type = document.getElementById(`${questionId}-type`).value;
-      const optionsDiv = document.getElementById(`${questionId}-options`);
+      const type = document.getElementById(\`\${questionId}-type\`).value;
+      const optionsDiv = document.getElementById(\`\${questionId}-options\`);
       
       if (type === 'multiple' || type === 'checkbox' || type === 'dropdown') {
         optionsDiv.style.display = 'block';
-        optionsDiv.innerHTML = `
-          <h4 style="color: #00d4ff; margin: 18px 0 12px 0; font-size: 0.9em;">Define Options:</h4>
-          <div id="${questionId}-options-list">
+        optionsDiv.innerHTML = \`
+          <h4 style="color: var(--text-main); margin: 18px 0 12px 0; font-size: 0.9em;">Define Options:</h4>
+          <div id="\${questionId}-options-list">
             <div class="option-group">
               <input type="text" placeholder="Option 1" class="option-input">
-              <button class="remove-option-btn" onclick="removeOption(this)" style="display: none;">-</button>
+              <button class="remove-option-btn delete-question" onclick="removeOption(this)" style="display: none; padding: 0 12px;">-</button>
             </div>
           </div>
-          <button class="add-option-btn" onclick="addOption('${questionId}')" style="margin-top:10px;">+ Add Option</button>
-        `;
+          <button class="add-option-btn" onclick="addOption('\${questionId}')" style="margin-top:10px;">+ Add Option</button>
+        \`;
       } else {
         optionsDiv.style.display = 'none';
         optionsDiv.innerHTML = '';
@@ -529,15 +536,15 @@
     }
 
     function addOption(questionId) {
-      const optionsList = document.getElementById(`${questionId}-options-list`);
+      const optionsList = document.getElementById(\`\${questionId}-options-list\`);
       const optionCount = optionsList.querySelectorAll('.option-group').length + 1;
       
-      const optionHTML = `
+      const optionHTML = \`
         <div class="option-group">
-          <input type="text" placeholder="Option ${optionCount}" class="option-input">
-          <button class="remove-option-btn" onclick="removeOption(this)">-</button>
+          <input type="text" placeholder="Option \${optionCount}" class="option-input">
+          <button class="remove-option-btn delete-question" onclick="removeOption(this)" style="padding: 0 12px;">-</button>
         </div>
-      `;
+      \`;
       
       optionsList.insertAdjacentHTML('beforeend', optionHTML);
       
@@ -557,7 +564,7 @@
       }
       
       remainingGroups.forEach((group, index) => {
-        group.querySelector('input').placeholder = `Option ${index + 1}`;
+        group.querySelector('input').placeholder = \`Option \${index + 1}\`;
       });
     }
 
@@ -583,12 +590,12 @@
       }
 
       const formStructure = questions.map((qId, index) => {
-        const text = document.getElementById(`${qId}-text`).value;
-        const type = document.getElementById(`${qId}-type`).value;
-        const required = document.getElementById(`${qId}-required`).checked;
+        const text = document.getElementById(\`\${qId}-text\`).value;
+        const type = document.getElementById(\`\${qId}-type\`).value;
+        const required = document.getElementById(\`\${qId}-required\`).checked;
 
         if (!text) {
-          throw new Error(`Question ${index + 1} is missing text`);
+          throw new Error(\`Question \${index + 1} is missing text\`);
         }
 
         const question = {
@@ -599,11 +606,11 @@
         };
 
         if (type === 'multiple' || type === 'checkbox' || type === 'dropdown') {
-          const optionInputs = document.querySelectorAll(`#${qId}-options-list .option-input`);
+          const optionInputs = document.querySelectorAll(\`#\${qId}-options-list .option-input\`);
           const options = Array.from(optionInputs).map(input => input.value.trim()).filter(v => v);
           
           if (options.length === 0) {
-            throw new Error(`Question ${index + 1} needs at least one option`);
+            throw new Error(\`Question \${index + 1} needs at least one option\`);
           }
           
           question.options = options;
@@ -630,7 +637,7 @@
           const reader = new FileReader();
           reader.onload = async (e) => {
             const text = e.target.result;
-            const emails = text.split(/[\n,]/).map(e => e.trim()).filter(e => e);
+            const emails = text.split(/[\\n,]/).map(e => e.trim()).filter(e => e);
             
             await fetch('/api/whitelist/upload', {
               method: 'POST',
@@ -645,7 +652,7 @@
           const blackReader = new FileReader();
           blackReader.onload = async (e) => {
             const text = e.target.result;
-            const emails = text.split(/[\n,]/).map(e => e.trim()).filter(e => e);
+            const emails = text.split(/[\\n,]/).map(e => e.trim()).filter(e => e);
             
             await fetch('/api/whitelist/upload-blacklist', {
               method: 'POST',
@@ -699,32 +706,32 @@
           return form;
         }));
 
-        formList.innerHTML = formsWithCounts.map(form => `
+        formList.innerHTML = formsWithCounts.map(form => \`
           <div class="form-card">
             <div>
-              <div class="form-title">${form.formtitle}</div>
+              <div class="form-title">\${form.formtitle}</div>
               <div class="form-status">
-                <span>Status: <strong>${form.islive ? '🟢 Live' : '🟡 Draft'}</strong></span>
-                <span>Access: <strong>${form.requirewhitelist ? '🔒 Whitelist' : '🌐 Public'}</strong></span>
-                <span>Responses: <strong>${form.responseCount}</strong></span>
-                <span>Created: <strong>${new Date(form.createdat).toLocaleDateString()}</strong></span>
+                <span>Status: <strong>\${form.islive ? '🟢 Live' : '🟡 Draft'}</strong></span>
+                <span>Access: <strong>\${form.requirewhitelist ? '🔒 Whitelist' : '🌐 Public'}</strong></span>
+                <span>Responses: <strong>\${form.responseCount}</strong></span>
+                <span>Created: <strong>\${new Date(form.createdat).toLocaleDateString()}</strong></span>
               </div>
             </div>
             <div class="form-actions">
-              ${!form.islive ? `<button onclick="goLive(${form.formid})">Go Live</button>` : ''}
-              <button onclick="copyFormLink(${form.formid})">Copy Link</button>
-              <button onclick="viewSubmissions(${form.formid})">View Submissions</button>
-              <button onclick="deleteForm(${form.formid})" class="delete-question">Delete</button>
+              \${!form.islive ? \`<button onclick="goLive(\${form.formid})">Go Live</button>\` : ''}
+              <button onclick="copyFormLink(\${form.formid})">Copy Link</button>
+              <button onclick="viewSubmissions(\${form.formid})">View Submissions</button>
+              <button onclick="deleteForm(\${form.formid})" class="delete-question">Delete</button>
             </div>
           </div>
-        `).join('');
+        \`).join('');
       } else {
-        formList.innerHTML = '<p style="color: #b0b0c0; text-align: center; padding: 40px; font-size: 1.1em;">No forms created yet. Create your first form above!</p>';
+        formList.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 40px; font-size: 1.1em;">No forms created yet. Create your first form above!</p>';
       }
     }
 
     function copyFormLink(formId) {
-      const link = `https://formify-y9mb.onrender.com/form.html?id=${formId}`;
+      const link = \`https://formify-y9mb.onrender.com/form.html?id=\${formId}\`;
       navigator.clipboard.writeText(link);
       alert('✅ Form link copied to clipboard!');
     }
@@ -742,7 +749,7 @@
     }
 
     function viewSubmissions(formId) {
-      window.location.href = `/responses.html?formId=${formId}&adminEmail=${adminEmail}`;
+      window.location.href = \`/responses.html?formId=\${formId}&adminEmail=\${adminEmail}\`;
     }
 
     async function deleteForm(formId) {
@@ -761,7 +768,7 @@
 
     function showMessage(elementId, message, type) {
       const msgEl = document.getElementById(elementId);
-      msgEl.innerHTML = `<div class="message ${type}">${message}</div>`;
+      msgEl.innerHTML = \`<div class="message \${type}">\${message}</div>\`;
       setTimeout(() => msgEl.innerHTML = '', 5000);
     }
 
