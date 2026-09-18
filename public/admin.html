@@ -562,33 +562,41 @@
         }
 
         if (requireWhitelist && whitelistFile) {
-          const reader = new FileReader();
-          reader.onload = async (e) => {
-            const text = e.target.result;
-            const emails = text.split(/[\\n,]/).map(e => e.trim()).filter(e => e);
-            
-            await fetch('/api/whitelist/upload', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ formId: formData.formId, emails })
-            });
-          };
-          reader.readAsText(whitelistFile);
+          await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+              try {
+                const text = e.target.result;
+                const emails = text.split(/[\n\r,]+/).map(e => e.trim()).filter(e => e);
+                await fetch('/api/whitelist/upload', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ formId: formData.formId, emails })
+                });
+                resolve();
+              } catch (err) { reject(err); }
+            };
+            reader.readAsText(whitelistFile);
+          });
         }
 
         if (blacklistFile) {
-          const blackReader = new FileReader();
-          blackReader.onload = async (e) => {
-            const text = e.target.result;
-            const emails = text.split(/[\\n,]/).map(e => e.trim()).filter(e => e);
-            
-            await fetch('/api/whitelist/upload-blacklist', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ formId: formData.formId, emails })
-            });
-          };
-          blackReader.readAsText(blacklistFile);
+          await new Promise((resolve, reject) => {
+            const blackReader = new FileReader();
+            blackReader.onload = async (e) => {
+              try {
+                const text = e.target.result;
+                const emails = text.split(/[\n\r,]+/).map(e => e.trim()).filter(e => e);
+                await fetch('/api/whitelist/upload-blacklist', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ formId: formData.formId, emails })
+                });
+                resolve();
+              } catch (err) { reject(err); }
+            };
+            blackReader.readAsText(blacklistFile);
+          });
         }
 
         showMessage('createMessage', '✅ Form created successfully!', 'success');
