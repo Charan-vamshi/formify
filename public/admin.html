@@ -951,8 +951,7 @@
             reader.onload = async (e) => {
               try {
                 const text = e.target.result;
-                const emails = text.split(/[
-,]+/).map(e => e.trim()).filter(e => e);
+                const emails = text.split(/[\n\r,]+/).map(e => e.trim()).filter(e => e);
                 await fetch('/api/whitelist/upload', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
@@ -971,8 +970,7 @@
             blackReader.onload = async (e) => {
               try {
                 const text = e.target.result;
-                const emails = text.split(/[
-,]+/).map(e => e.trim()).filter(e => e);
+                const emails = text.split(/[\n\r,]+/).map(e => e.trim()).filter(e => e);
                 await fetch('/api/whitelist/upload-blacklist', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
