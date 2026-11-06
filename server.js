@@ -24,16 +24,47 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Protect owner and admin pages
-app.get('/owner.html', (req, res, next) => {
-  if (!req.isAuthenticated()) {
+// Protect owner, admin, and responses pages dynamically based on database roles
+app.get('/owner.html', async (req, res, next) => {
+  if (!req.isAuthenticated() || !req.user || !req.user.emails || !req.user.emails[0]) {
     return res.redirect('/');
   }
-  next();
+  const sessionEmail = req.user.emails[0].value;
+  try {
+    const { rows } = await pool.query('SELECT role FROM Users WHERE Email = $1', [sessionEmail]);
+    if (rows.length === 0 || rows[0].role !== 'Owner') {
+      return res.redirect('/');
+    }
+    if (req.query.email !== sessionEmail) {
+      return res.redirect(`/owner.html?email=${encodeURIComponent(sessionEmail)}`);
+    }
+    next();
+  } catch (err) {
+    res.redirect('/');
+  }
 });
 
-app.get('/admin.html', (req, res, next) => {
-  if (!req.isAuthenticated()) {
+app.get('/admin.html', async (req, res, next) => {
+  if (!req.isAuthenticated() || !req.user || !req.user.emails || !req.user.emails[0]) {
+    return res.redirect('/');
+  }
+  const sessionEmail = req.user.emails[0].value;
+  try {
+    const { rows } = await pool.query('SELECT role FROM Users WHERE Email = $1', [sessionEmail]);
+    if (rows.length === 0 || rows[0].role !== 'Admin') {
+      return res.redirect('/');
+    }
+    if (req.query.email !== sessionEmail) {
+      return res.redirect(`/admin.html?email=${encodeURIComponent(sessionEmail)}`);
+    }
+    next();
+  } catch (err) {
+    res.redirect('/');
+  }
+});
+
+app.get('/responses.html', async (req, res, next) => {
+  if (!req.isAuthenticated() || !req.user || !req.user.emails || !req.user.emails[0]) {
     return res.redirect('/');
   }
   next();
