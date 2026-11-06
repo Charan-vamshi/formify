@@ -61,9 +61,24 @@
     
     .form-description {
       color: var(--text-muted);
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       text-align: center;
       font-size: 1.1em;
+    }
+
+    .deadline-banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      margin: 0 auto 30px auto;
+      width: fit-content;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      font-size: 0.9em;
+      color: var(--text-muted);
     }
     
     .question-block {
@@ -247,6 +262,11 @@
           return;
         }
 
+        if (form.expiresat && new Date() > new Date(form.expiresat)) {
+          showError('⚠️ This form has expired and is no longer accepting responses.');
+          return;
+        }
+
         formData = form;
         renderForm();
       } catch (error) {
@@ -272,6 +292,7 @@
       let formHTML = `
         <h1>${formData.formtitle}</h1>
         <p class="form-description">Submitting as: <strong style="color: var(--primary);">${studentEmail}</strong></p>
+        ${formData.expiresat ? `<div class="deadline-banner">📅 Deadline: ${new Date(formData.expiresat).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</div>` : ''}
         <form id="responseForm" onsubmit="submitForm(event)">
       `;
 

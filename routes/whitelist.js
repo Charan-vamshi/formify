@@ -49,10 +49,14 @@ router.post('/check', async (req, res) => {
   try {
     const { formId, studentEmail } = req.body;
     
-    const { rows: form } = await pool.query('SELECT RequireWhitelist FROM Forms WHERE FormID = $1', [formId]);
+    const { rows: form } = await pool.query('SELECT RequireWhitelist, ExpiresAt FROM Forms WHERE FormID = $1', [formId]);
     
     if (form.length === 0) {
       return res.status(404).json({ error: 'Form not found' });
+    }
+
+    if (form[0].expiresat && new Date() > new Date(form[0].expiresat)) {
+      return res.status(403).json({ error: 'This form has expired and is no longer accepting responses.' });
     }
     
     const { rows: blacklist } = await pool.query(

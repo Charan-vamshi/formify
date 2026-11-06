@@ -7,9 +7,13 @@ router.post('/submit', async (req, res) => {
   try {
     const { formId, studentEmail, responseData } = req.body;
     
-    const { rows: form } = await pool.query('SELECT IsLive, RequireWhitelist FROM Forms WHERE FormID = $1', [formId]);
+    const { rows: form } = await pool.query('SELECT IsLive, RequireWhitelist, ExpiresAt FROM Forms WHERE FormID = $1', [formId]);
     if (form.length === 0 || !form[0].islive) {
       return res.status(400).json({ error: 'Form is not live' });
+    }
+
+    if (form[0].expiresat && new Date() > new Date(form[0].expiresat)) {
+      return res.status(403).json({ error: 'This form has expired and is no longer accepting submissions.' });
     }
 
     if (form[0].requirewhitelist) {
