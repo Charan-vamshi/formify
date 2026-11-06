@@ -229,6 +229,88 @@
     
     .success { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); }
     .error { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
+  
+    /* Fixed Theme Toggle */
+    .theme-toggle-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--card-bg, #18181b);
+      border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+      color: var(--primary, #fafafa);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15em;
+      cursor: pointer;
+      z-index: 9999;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      padding: 0;
+    }
+    .theme-toggle-btn:hover {
+      transform: scale(1.08);
+    }
+    .theme-toggle-btn:active {
+      transform: scale(0.92);
+    }
+
+    /* Soft Premium Light Theme */
+    body.light-theme {
+      --primary: #18181b;
+      --bg-dark: #f4f4f5;
+      --card-bg: #ffffff;
+      --border: rgba(0, 0, 0, 0.08);
+      --text-main: #18181b;
+      --text-muted: #71717a;
+      background: #f4f4f5;
+      background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.08), transparent);
+      color: #18181b;
+    }
+    body.light-theme h1 {
+      background: linear-gradient(135deg, #18181b, #71717a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    body.light-theme .header,
+    body.light-theme .section,
+    body.light-theme .admin-card {
+      background: #ffffff;
+      border-color: rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    }
+    body.light-theme input {
+      background: #ffffff;
+      border-color: #e4e4e7;
+      color: #18181b;
+    }
+    body.light-theme input:focus {
+      border-color: #18181b;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+    }
+    body.light-theme button {
+      background: #18181b;
+      color: #ffffff;
+    }
+    body.light-theme .remove-btn {
+      background: rgba(239, 68, 68, 0.08) !important;
+      color: #dc2626 !important;
+      border-color: rgba(239, 68, 68, 0.2) !important;
+    }
+    body.light-theme .remove-btn:hover {
+      background: #dc2626 !important;
+      color: #ffffff !important;
+    }
+    body.light-theme .theme-toggle-btn {
+      background: #ffffff;
+      border-color: rgba(0, 0, 0, 0.1);
+      color: #18181b;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
   </style>
 </head>
 <body>
@@ -339,6 +421,42 @@
     }
 
     loadAdmins();
+  
+    function initTheme() {
+      const saved = localStorage.getItem('sfx_theme');
+      let theme = saved;
+      if (!theme) {
+        const hour = new Date().getHours();
+        theme = (hour >= 6 && hour < 18) ? 'light' : 'dark';
+      }
+      applyTheme(theme);
+    }
+
+    function applyTheme(theme) {
+      const icon = document.getElementById('themeToggleIcon');
+      if (theme === 'light') {
+        document.body.classList.add('light-theme');
+        if (icon) icon.textContent = '🌙';
+      } else {
+        document.body.classList.remove('light-theme');
+        if (icon) icon.textContent = '☀️';
+      }
+    }
+
+    function toggleTheme() {
+      const isLight = document.body.classList.contains('light-theme');
+      const newTheme = isLight ? 'dark' : 'light';
+      localStorage.setItem('sfx_theme', newTheme);
+      applyTheme(newTheme);
+    }
+
+    initTheme();
+
   </script>
+
+  <button id="themeToggleBtn" class="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Theme" aria-label="Toggle Theme">
+    <span id="themeToggleIcon">☀️</span>
+  </button>
+
 </body>
 </html>
