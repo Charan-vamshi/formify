@@ -482,7 +482,15 @@
         
         formStructure.forEach(q => {
           const answer = sub.responsedata[q.id];
-          html += `<td>${Array.isArray(answer) ? answer.join(', ') : answer || '-'}</td>`;
+          let displayAnswer = '-';
+          if (Array.isArray(answer)) {
+            displayAnswer = answer.join(', ');
+          } else if (typeof answer === 'string' && (answer.startsWith('http://') || answer.startsWith('https://'))) {
+            displayAnswer = `<a href="${answer}" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: underline; font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">📎 View File</a>`;
+          } else if (answer) {
+            displayAnswer = answer;
+          }
+          html += `<td>${displayAnswer}</td>`;
         });
         
         html += '</tr>';

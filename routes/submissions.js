@@ -94,4 +94,49 @@ router.post('/get-count', async (req, res) => {
   }
 });
 
+router.post('/upload-file', async (req, res) => {
+  try {
+    const { fileName, fileType, fileData, formId } = req.body;
+
+    if (!fileName || !fileData) {
+      return res.status(400).json({ error: 'File name and data are required' });
+    }
+
+    const base64Content = fileData.includes(',') ? fileData.split(',')[1] : fileData;
+    const buffer = Buffer.from(base64Content, 'base64');
+
+    if (buffer.length > 2 * 1024 * 1024) {
+      return res.status(400).json({ error: 'File exceeds maximum limit of 2MB' });
+    }
+
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_KEY;
+    const bucket = process.env.SUPABASE_BUCKET || 'form-attachments';
+
+    const sanitizedName = fileName.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const uniquePath = `form_${formId || 'gen'}_${Date.now()}_${sanitizedName}`;
+
+    const uploadRes = await fetch(`${supabaseUrl}/storage/v1/object/${bucket}/${uniquePath}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${supabaseKey}`,
+        'apikey': supabaseKey,
+        'Content-Type': fileType || 'application/octet-stream',
+        'x-upsert': 'true'
+      },
+      body: buffer
+    });
+
+    if (!uploadRes.ok) {
+      const errText = await uploadRes.text();
+      return res.status(500).json({ error: 'Storage upload failed: ' + errText });
+    }
+
+    const publicUrl = `${supabaseUrl}/storage/v1/object/public/${bucket}/${uniquePath}`;
+    res.json({ url: publicUrl, fileName: sanitizedName });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;

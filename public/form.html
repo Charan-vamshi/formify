@@ -457,6 +457,16 @@
             });
             formHTML += `</select>`;
             break;
+          case 'file':
+            formHTML += `
+              <div class="file-upload-block">
+                <input type="file" id="${question.id}" name="${question.id}" ${question.required ? 'required' : ''} onchange="validateFileSize(this)" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.zip,.txt">
+                <div style="font-size: 0.8em; color: var(--text-muted); margin-top: 6px;">
+                  📎 Allowed: PDF, Images, Documents (Max 2MB)
+                </div>
+              </div>
+            `;
+            break;
         }
 
         formHTML += `</div>`;
@@ -466,6 +476,16 @@
       formHTML += `</form>`;
 
       document.getElementById('content').innerHTML = formHTML;
+    }
+
+    function validateFileSize(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        if (file.size > 2 * 1024 * 1024) {
+          alert('⚠️ File size exceeds 2MB! Please choose a smaller file under 2MB.');
+          input.value = '';
+        }
+      }
     }
 
     async function submitForm(event) {
@@ -481,16 +501,52 @@
       
       const responseData = {};
       
-      structure.forEach(question => {
-        if (question.type === 'checkbox') {
-          const values = formDataObj.getAll(question.id);
-          responseData[question.id] = values;
-        } else {
-          responseData[question.id] = formDataObj.get(question.id);
-        }
-      });
-
       try {
+        for (const question of structure) {
+          if (question.type === 'file') {
+            const fileInput = document.getElementById(question.id);
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+              const file = fileInput.files[0];
+              if (file.size > 2 * 1024 * 1024) {
+                throw new Error(`File for "${question.label}" exceeds 2MB limit.`);
+              }
+              submitBtn.textContent = 'Uploading attachment...';
+              
+              const fileData = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(new Error('Failed to read file'));
+                reader.readAsDataURL(file);
+              });
+              
+              const uploadRes = await fetch('/api/submissions/upload-file', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  fileName: file.name,
+                  fileType: file.type,
+                  fileData: fileData,
+                  formId: formId
+                })
+              });
+              
+              const uploadResult = await uploadRes.json();
+              if (uploadResult.error) {
+                throw new Error(uploadResult.error);
+              }
+              responseData[question.id] = uploadResult.url;
+            } else {
+              responseData[question.id] = null;
+            }
+          } else if (question.type === 'checkbox') {
+            const values = formDataObj.getAll(question.id);
+            responseData[question.id] = values;
+          } else {
+            responseData[question.id] = formDataObj.get(question.id);
+          }
+        }
+
+        submitBtn.textContent = 'Saving response...';
         const response = await fetch('/api/submissions/submit', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
